@@ -62,6 +62,26 @@ public class Board {
         return opponents;
     }
 
+    public void removeopponents(List<Opponent> opponentsToRemove){
+
+        for (Opponent opponent : opponentsToRemove) {
+
+            this.entities.remove(opponent);
+
+            for (int i = 0; i < spaces.length; i++) {
+
+                for (int j = 0; j < spaces[i].length; j++) {
+
+                    if (spaces[i][j].getEntityOnField() == opponent){
+
+                        spaces[i][j].setEntityOnField(null);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public void setEntities(List<Entity> entities) {
         this.entities = entities;
     }
