@@ -4,7 +4,7 @@ public class Orc implements Ai {
 
     private Player player;
     private Opponent opponent;
-    private int searchRadius = 3;
+    private int searchRadius = 4;
     private int maxHealth = 5;
     private int dmg = 2;
     private int reach = 1;
@@ -57,13 +57,13 @@ public class Orc implements Ai {
 
             if (directionSplit[1].equals("x")) {
 
-                if (spaces[opponentXPos + movement][opponentYPos].getEntityOnField() instanceof Entity && !(spaces[opponentXPos + movement][opponentYPos].getEntityOnField() instanceof Player) ) {
+                if (spaces[opponentXPos + movement][opponentYPos].getEntityOnField() != null && !(spaces[opponentXPos + movement][opponentYPos].getEntityOnField() instanceof Player) ) {
 
                     removeDirections.put(direction, true);
                 }
             } else if (directionSplit[1].equals("y")) {
 
-                if (spaces[opponentXPos][opponentYPos + movement].getEntityOnField() instanceof Entity && !(spaces[opponentXPos][opponentYPos + movement].getEntityOnField() instanceof Player)) {
+                if (spaces[opponentXPos][opponentYPos + movement].getEntityOnField() != null && !(spaces[opponentXPos][opponentYPos + movement].getEntityOnField() instanceof Player)) {
 
                     removeDirections.put(direction, true);
                 }
@@ -135,8 +135,6 @@ public class Orc implements Ai {
         }
         String move = findRandomValidDirectionToMoveIn(directions, random);
         opponent.move(Integer.parseInt(move.split(" ")[0] + 1) * reach,move.charAt(2),board);
-
-        return;
     }
 
     public String findRandomValidDirectionToMoveIn(HashMap<String, Boolean> directions, Random random) {

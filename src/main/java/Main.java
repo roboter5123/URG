@@ -6,14 +6,14 @@ import java.util.Scanner;
 public class Main {
 
     public static int round = 1;
-    static int boardSize = 10;
+    static int boardSize = 21;
     static int playerHealth = 5;
     static int playerMaxHealth = 5;
     static int opponentCount = 8;
-    static int wallcount = 6;
     static Board board = new Board(boardSize);
+    static int ROOM_SIZE = 7;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
 //      places the player at a random space on the board and generates opponents so that no character is on the same space
         initialize();
@@ -27,7 +27,7 @@ public class Main {
 
                 drawMap();
                 playerMove();
-                play = ceckForDeaths();
+                play = checkForDeaths();
 
                 if (!play) {
 
@@ -40,13 +40,12 @@ public class Main {
 
                 List<Opponent> opponents = board.getOpponents();
 
-                for (int i = 0; i < opponents.size(); i++) {
+                for (Opponent opponent : opponents) {
 
-                    Opponent opponent = opponents.get(i);
                     opponentsMove(opponent);
-                    play = ceckForDeaths();
+                    play = checkForDeaths();
 
-                    if (!play){
+                    if (!play) {
 
                         break;
                     }
@@ -66,33 +65,32 @@ public class Main {
 
     private static void generateWalls() {
 
-        Random random = new Random();
+        for (int k = 0; k < boardSize; k += ROOM_SIZE) {
 
-        for (int i = 0; i < wallcount; i++) {
+            for (int l = 0; l < boardSize; l += ROOM_SIZE) {
 
-            while (true){
 
-                int xPos = random.nextInt(boardSize);
-                int yPos = random.nextInt(boardSize);
-
-                if (board.getSpaces()[xPos][yPos].getEntityOnField() == null){
-
-                    board.getSpaces()[xPos][yPos].setEntityOnField(new Wall());
-                    break;
-                }
+                CenterRoom.fillSpaces(board, new int[]{k, l});
             }
         }
     }
 
     private static void placePlayerOnField(Random random) {
 
-        Player player = new Player(playerHealth, playerMaxHealth);
-        int playerXPos = random.nextInt(boardSize);
-        int playerYPos = random.nextInt(boardSize);
-        player.setxPos(playerXPos);
-        player.setyPos(playerYPos);
-        board.getSpaces()[playerXPos][playerYPos].setEntityOnField(player);
-        board.setPlayer(player);
+        while (true) {
+
+            Player player = new Player(playerHealth, playerMaxHealth);
+            int playerXPos = random.nextInt(boardSize);
+            int playerYPos = random.nextInt(boardSize);
+
+            if (board.getSpaces()[playerXPos][playerYPos].getEntityOnField() == null){
+                player.setxPos(playerXPos);
+                player.setyPos(playerYPos);
+                board.getSpaces()[playerXPos][playerYPos].setEntityOnField(player);
+                board.setPlayer(player);
+                break;
+            }
+        }
     }
 
     private static void generateOpponents(Random random) {
@@ -149,16 +147,16 @@ public class Main {
         opponent.calculateMovement(board);
     }
 
-    private static boolean ceckForDeaths() {
+    private static boolean checkForDeaths() {
 
         if (board.getPlayer().getHealth() < 1) {
 
-            gameOver(false,board.getPlayer(),board);
+            gameOver(false);
             return false;
 
         } else {
 
-            List<Opponent> opponentsToRemove = new ArrayList<Opponent>();
+            List<Opponent> opponentsToRemove = new ArrayList<>();
 
             for (Opponent opponent : board.getOpponents()) {
 
@@ -168,22 +166,18 @@ public class Main {
                 }
             }
 
-            for (Opponent opponent : opponentsToRemove) {
-
-                board.getSpaces()[opponent.getxPos()][opponent.getyPos()].setEntityOnField(null);
-                board.getOpponents().remove(opponent);
-            }
+            board.removeopponents(opponentsToRemove);
 
             if (board.getOpponents().size() < 1) {
 
-                gameOver(true,board.getPlayer(),board);
+                gameOver(true);
                 return false;
             }
         }
         return true;
     }
 
-    public static void gameOver(boolean hasWon, Player player, Board board) {
+    public static void gameOver(boolean hasWon) {
 
         if (hasWon) {
             drawMap();
