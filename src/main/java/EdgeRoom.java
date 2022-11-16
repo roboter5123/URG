@@ -1,9 +1,16 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Scanner;
+
 public class EdgeRoom {
 
     public static final int ROOM_SIZE = 7;
     boolean[][] wallPositions;
+    public static int permutations = Objects.requireNonNull(new File("rooms/EdgeRooms").list()).length;
 
-    public void fillSpaces(Board board, int[] roomcoord, int rotation) {
+    public void fillSpaces(Board board, int[] roomcoord, int rotation) throws FileNotFoundException {
 
         Space[][] spaces = board.getSpaces();
         boolean[][] wallPositions = getWallPositions(rotation);
@@ -20,7 +27,7 @@ public class EdgeRoom {
         }
     }
 
-    public boolean[][] rotate(boolean[][] wallpositions){
+    public boolean[][] rotate(boolean[][] wallpositions) {
 
         final int M = wallpositions.length;
         final int N = wallpositions[0].length;
@@ -28,27 +35,37 @@ public class EdgeRoom {
         boolean[][] ret = new boolean[N][M];
         for (int r = 0; r < M; r++) {
             for (int c = 0; c < N; c++) {
-                ret[c][M-1-r] = wallpositions[r][c];
+                ret[c][M - 1 - r] = wallpositions[r][c];
             }
         }
         return ret;
     }
 
 
+    public boolean[][] getWallPositions(int rotation) throws FileNotFoundException {
 
-    public boolean[][] getWallPositions(int rotation) {
+        wallPositions = new boolean[ROOM_SIZE][ROOM_SIZE];
+        Random random = new Random();
+        int roomNumber = random.nextInt(permutations);
 
-        //        TODO Switch this for a read of a random edgeRoom template file
+        File file = new File("rooms/EdgeRooms/edgeRoom" + roomNumber + ".csv");
 
-        wallPositions = new boolean[][]{
-                {true, true, false, false, false, true, true},
-                {true, false, false, false, false, false, true},
-                {true, false, false, false, false, false, false},
-                {true, false, false, false, false, false, false},
-                {true, false, false, false, false, false, false},
-                {true, false, false, false, false, false, true},
-                {true, true, false, false, false, true, true},
-        };
+        Scanner scanner = new Scanner(file);
+        int counter = 0;
+
+        while (scanner.hasNext()) {
+
+            String line = scanner.nextLine();
+            String[] lineSplit = line.split(",");
+
+            for (int i = 0; i < lineSplit.length; i++) {
+
+                if (Objects.equals(lineSplit[i], "x")) {
+                    wallPositions[i][counter] = true;
+                }
+            }
+            counter++;
+        }
 
         for (int i = 0; i < rotation; i++) {
 
