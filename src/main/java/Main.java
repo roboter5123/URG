@@ -67,10 +67,25 @@ public class Main {
 
         for (int k = 0; k < boardSize; k += ROOM_SIZE) {
 
+
             for (int l = 0; l < boardSize; l += ROOM_SIZE) {
 
 
-                CenterRoom.fillSpaces(board, new int[]{k, l});
+                if (k == 0 && l == 0){
+
+                    CornerRoom room = new CornerRoom();
+                    room.fillSpaces(board, new int[]{k, l},0);
+                } else if (k == 0 && l == boardSize - ROOM_SIZE) {
+
+                    CornerRoom room = new CornerRoom();
+                    room.fillSpaces(board, new int[]{k,l}, 1);
+
+                } else {
+
+                    CenterRoom room = new CenterRoom();
+                    room.fillSpaces(board, new int[]{k, l});
+                }
+
             }
         }
     }
