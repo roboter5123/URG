@@ -1,4 +1,4 @@
-public class CornerRoom {
+public class EdgeRoom {
 
     public static final int ROOM_SIZE = 7;
     boolean[][] wallPositions;
@@ -38,10 +38,10 @@ public class CornerRoom {
 
     public boolean[][] getWallPositions(int rotation) {
 
-        //        TODO Switch this for a read of a random cornerRoom template file
+        //        TODO Switch this for a read of a random edgeRoom template file
 
         wallPositions = new boolean[][]{
-                {true, true, true, true, true, true, true},
+                {true, true, false, false, false, true, true},
                 {true, false, false, false, false, false, true},
                 {true, false, false, false, false, false, false},
                 {true, false, false, false, false, false, false},

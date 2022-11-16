@@ -11,7 +11,7 @@ public class Main {
     static int boardSize = 3 * ROOM_SIZE;
     static int playerHealth = 5;
     static int playerMaxHealth = 5;
-    static int opponentCount = 8;
+    static int opponentCount = (int) (0.4 * boardSize);
     static Board board = new Board(boardSize);
 
 
@@ -72,7 +72,7 @@ public class Main {
 
             for (int l = 0; l < boardSize; l += ROOM_SIZE) {
 
-
+//                Corner rooms
                 if (k == 0 && l == 0) {
 
                     CornerRoom room = new CornerRoom();
@@ -92,7 +92,29 @@ public class Main {
 
                     CornerRoom room = new CornerRoom();
                     room.fillSpaces(board, new int[]{k, l}, 3);
-                } else {
+
+//                    Edge Rooms
+                } else if (l == 0) {
+
+                    EdgeRoom room = new EdgeRoom();
+                    room.fillSpaces(board, new int[]{k, l}, 0);
+
+                } else if (k == 0) {
+
+                    EdgeRoom room = new EdgeRoom();
+                    room.fillSpaces(board, new int[]{k, l}, 1);
+
+                } else if (l == boardSize - ROOM_SIZE) {
+
+                    EdgeRoom room = new EdgeRoom();
+                    room.fillSpaces(board, new int[]{k, l}, 2);
+
+                } else if (k == boardSize - ROOM_SIZE) {
+
+                    EdgeRoom room = new EdgeRoom();
+                    room.fillSpaces(board, new int[]{k, l}, 3);
+
+                }  else {
 
                     CenterRoom room = new CenterRoom();
                     room.fillSpaces(board, new int[]{k, l});
