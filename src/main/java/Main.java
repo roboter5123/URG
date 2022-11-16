@@ -6,12 +6,14 @@ import java.util.Scanner;
 public class Main {
 
     public static int round = 1;
-    static int boardSize = 21;
+
+    static int ROOM_SIZE = 7;
+    static int boardSize = 3 * ROOM_SIZE;
     static int playerHealth = 5;
     static int playerMaxHealth = 5;
     static int opponentCount = 8;
     static Board board = new Board(boardSize);
-    static int ROOM_SIZE = 7;
+
 
     public static void main(String[] args) {
 
@@ -71,15 +73,25 @@ public class Main {
             for (int l = 0; l < boardSize; l += ROOM_SIZE) {
 
 
-                if (k == 0 && l == 0){
+                if (k == 0 && l == 0) {
 
                     CornerRoom room = new CornerRoom();
-                    room.fillSpaces(board, new int[]{k, l},0);
+                    room.fillSpaces(board, new int[]{k, l}, 0);
+
                 } else if (k == 0 && l == boardSize - ROOM_SIZE) {
 
                     CornerRoom room = new CornerRoom();
-                    room.fillSpaces(board, new int[]{k,l}, 1);
+                    room.fillSpaces(board, new int[]{k, l}, 1);
 
+                } else if (k == boardSize - ROOM_SIZE && l == boardSize - ROOM_SIZE) {
+
+                    CornerRoom room = new CornerRoom();
+                    room.fillSpaces(board, new int[]{k, l}, 2);
+
+                } else if (k == boardSize - ROOM_SIZE && l == 0) {
+
+                    CornerRoom room = new CornerRoom();
+                    room.fillSpaces(board, new int[]{k, l}, 3);
                 } else {
 
                     CenterRoom room = new CenterRoom();
@@ -98,7 +110,7 @@ public class Main {
             int playerXPos = random.nextInt(boardSize);
             int playerYPos = random.nextInt(boardSize);
 
-            if (board.getSpaces()[playerXPos][playerYPos].getEntityOnField() == null){
+            if (board.getSpaces()[playerXPos][playerYPos].getEntityOnField() == null) {
                 player.setxPos(playerXPos);
                 player.setyPos(playerYPos);
                 board.getSpaces()[playerXPos][playerYPos].setEntityOnField(player);

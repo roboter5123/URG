@@ -20,17 +20,18 @@ public class CornerRoom {
         }
     }
 
-    public void rotate(boolean[][] wallpositions){
+    public boolean[][] rotate(boolean[][] wallpositions){
 
         final int M = wallpositions.length;
         final int N = wallpositions[0].length;
+
         boolean[][] ret = new boolean[N][M];
         for (int r = 0; r < M; r++) {
             for (int c = 0; c < N; c++) {
                 ret[c][M-1-r] = wallpositions[r][c];
             }
         }
-
+        return ret;
     }
 
 
@@ -48,9 +49,9 @@ public class CornerRoom {
                 {true, true, false, false, false, true, true},
         };
 
-        for (int i = 0; i <= rotation; i++) {
+        for (int i = 0; i < rotation; i++) {
 
-            rotate(wallPositions);
+            wallPositions = rotate(wallPositions);
         }
 
         return wallPositions;
