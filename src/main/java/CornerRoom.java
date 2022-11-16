@@ -1,9 +1,16 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Scanner;
+
 public class CornerRoom {
 
     public static final int ROOM_SIZE = 7;
     boolean[][] wallPositions;
+    public static int permutations = Objects.requireNonNull(new File("rooms/CornerRooms").list()).length;
 
-    public void fillSpaces(Board board, int[] roomcoord, int rotation) {
+    public void fillSpaces(Board board, int[] roomcoord, int rotation) throws FileNotFoundException {
 
         Space[][] spaces = board.getSpaces();
         boolean[][] wallPositions = getWallPositions(rotation);
@@ -36,19 +43,30 @@ public class CornerRoom {
 
 
 
-    public boolean[][] getWallPositions(int rotation) {
+    public boolean[][] getWallPositions(int rotation) throws FileNotFoundException {
 
-        //        TODO Switch this for a read of a random cornerRoom template file
+        wallPositions = new boolean[ROOM_SIZE][ROOM_SIZE];
+        Random random = new Random();
+        int roomNumber = random.nextInt(permutations);
 
-        wallPositions = new boolean[][]{
-                {true, true, true, true, true, true, true},
-                {true, false, false, false, false, false, true},
-                {true, false, false, false, false, false, false},
-                {true, false, false, false, false, false, false},
-                {true, false, false, false, false, false, false},
-                {true, false, false, false, false, false, true},
-                {true, true, false, false, false, true, true},
-        };
+        File file = new File("rooms/CornerRooms/cornerRoom" + roomNumber + ".csv");
+
+        Scanner scanner = new Scanner(file);
+        int counter = 0;
+
+        while (scanner.hasNext()) {
+
+            String line = scanner.nextLine();
+            String[] lineSplit = line.split(",");
+
+            for (int i = 0; i < lineSplit.length; i++) {
+
+                if (Objects.equals(lineSplit[i], "x")) {
+                    wallPositions[i][counter] = true;
+                }
+            }
+            counter++;
+        }
 
         for (int i = 0; i < rotation; i++) {
 

@@ -8,7 +8,7 @@ public class Player extends Entity {
         this.setMaxHealth(maxHealth);
         this.setHealth(health);
         this.setDmg(1);
-        this.setSprite("  P  ");
+        this.setSprite(" P ");
     }
 }
 

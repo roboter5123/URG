@@ -12,7 +12,7 @@ public class Main {
     static int boardSize = 3 * ROOM_SIZE;
     static int playerHealth = 5;
     static int playerMaxHealth = 5;
-    static int opponentCount = (int) (0.4 * boardSize);
+    static int opponentCount = (int) (0.75 * boardSize);
     static Board board = new Board(boardSize);
 
 

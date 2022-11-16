@@ -95,7 +95,7 @@ public class Board {
 
             for (int j = 0; j < spaces.length; j++) {
 
-                map += "=".repeat(6);
+                map += "-".repeat(4);
 
             }
             map += "\n";
@@ -105,19 +105,19 @@ public class Board {
                 Space curSpace = spaces[j][i];
                 map += "|";
 
-                if (curSpace.getEntityOnField() instanceof Entity) {
+                if (curSpace.getEntityOnField() != null) {
 
                     map += curSpace.getEntityOnField().getSprite();
 
                 } else {
 
-                    map += "     ";
+                    map += "   ";
                 }
             }
             map += "|";
             map += "\n";
         }
-        map += "======".repeat(spaces[0].length);
+        map += "====".repeat(spaces[0].length);
 
         return map;
     }

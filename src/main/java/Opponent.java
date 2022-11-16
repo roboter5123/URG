@@ -13,7 +13,7 @@ public class Opponent extends Entity {
         if (type == "orc") {
 
             this.ai = new Orc(player, this);
-            this.setSprite(" Orc ");
+            this.setSprite("Orc");
         }
 
         this.setMaxHealth(ai.getMaxHealth());

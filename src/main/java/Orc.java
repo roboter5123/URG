@@ -4,7 +4,7 @@ public class Orc implements Ai {
 
     private Player player;
     private Opponent opponent;
-    private int searchRadius = 4;
+    private int searchRadius = 6;
     private int maxHealth = 5;
     private int dmg = 2;
     private int reach = 1;
