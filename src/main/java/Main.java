@@ -171,7 +171,7 @@ public class Main {
 
         System.out.println("\n".repeat(50));
         System.out.println("Untitled Fighting Game by roboter5123");
-        System.out.println("Round: " + round + " Highscore: roboter5123 rounds: 40");
+        System.out.println("Round: " + round + " Highscore: roboter5123 rounds: 102");
         System.out.println(board);
         System.out.println("Your Health " + board.getPlayer().getHealth() + "/" + board.getPlayer().getMaxHealth());
     }
