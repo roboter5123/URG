@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,7 @@ public class Main {
     static Board board = new Board(boardSize);
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
 //      places the player at a random space on the board and generates opponents so that no character is on the same space
         initialize();
@@ -57,7 +58,7 @@ public class Main {
         }
     }
 
-    public static void initialize() {
+    public static void initialize() throws FileNotFoundException {
 
         Random random = new Random();
         generateWalls();
@@ -65,7 +66,7 @@ public class Main {
         generateOpponents(random);
     }
 
-    private static void generateWalls() {
+    private static void generateWalls() throws FileNotFoundException {
 
         for (int k = 0; k < boardSize; k += ROOM_SIZE) {
 
