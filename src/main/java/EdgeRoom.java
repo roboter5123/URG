@@ -29,8 +29,8 @@ public class EdgeRoom {
 
     public boolean[][] rotate(boolean[][] wallpositions) {
 
-        final int M = wallpositions.length;
-        final int N = wallpositions[0].length;
+        int M = wallpositions.length;
+        int N = wallpositions[0].length;
 
         boolean[][] ret = new boolean[N][M];
         for (int r = 0; r < M; r++) {
