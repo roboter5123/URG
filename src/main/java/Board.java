@@ -10,19 +10,21 @@ public class Board {
 
     private List<Entity> entities = new ArrayList<>();
 
+    private Camera camera;
+
     public Board(int size) {
 
         spaces = new Space[size][size];
-        Random random = new Random();
 
         for (int i = 0; i < size; i++) {
 
 
             for (int j = 0; j < size; j++) {
 
-                    spaces[i][j] = new Space();
+                spaces[i][j] = new Space();
             }
         }
+
     }
 
     public Space[][] getSpaces() {
@@ -41,19 +43,20 @@ public class Board {
 
     public void setPlayer(Player player) {
         this.player = player;
+        camera = new Camera(player,9,spaces);
     }
 
     public List<Entity> getEntities() {
         return entities;
     }
 
-    public List<Opponent> getOpponents(){
+    public List<Opponent> getOpponents() {
 
         List<Opponent> opponents = new ArrayList<>();
 
         for (int i = 0; i < this.getEntities().size(); i++) {
 
-            if (this.entities.get(i) instanceof Opponent){
+            if (this.entities.get(i) instanceof Opponent) {
 
                 opponents.add((Opponent) this.entities.get(i));
             }
@@ -62,7 +65,7 @@ public class Board {
         return opponents;
     }
 
-    public void removeopponents(List<Opponent> opponentsToRemove){
+    public void removeopponents(List<Opponent> opponentsToRemove) {
 
         for (Opponent opponent : opponentsToRemove) {
 
@@ -72,7 +75,7 @@ public class Board {
 
                 for (int j = 0; j < spaces[i].length; j++) {
 
-                    if (spaces[i][j].getEntityOnField() == opponent){
+                    if (spaces[i][j].getEntityOnField() == opponent) {
 
                         spaces[i][j].setEntityOnField(null);
                         break;
@@ -89,36 +92,6 @@ public class Board {
     @Override
     public String toString() {
 
-        String map = "";
-
-        for (int i = 0; i < spaces[0].length; i++) {
-
-            for (int j = 0; j < spaces.length; j++) {
-
-                map += "-".repeat(4);
-
-            }
-            map += "\n";
-
-            for (int j = 0; j < spaces.length; j++) {
-
-                Space curSpace = spaces[j][i];
-                map += "|";
-
-                if (curSpace.getEntityOnField() != null) {
-
-                    map += curSpace.getEntityOnField().getSprite();
-
-                } else {
-
-                    map += "   ";
-                }
-            }
-            map += "|";
-            map += "\n";
-        }
-        map += "====".repeat(spaces[0].length);
-
-        return map;
+        return camera.getMap(spaces);
     }
 }
