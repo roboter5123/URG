@@ -1,3 +1,7 @@
+package Utilities;
+
+import entities.Wall;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;

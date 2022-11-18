@@ -1,6 +1,12 @@
+package entities;
+
+import Utilities.Board;
+import ai.AI;
+import ai.Orc;
+
 public class Opponent extends Entity {
 
-    private Ai ai;
+    private AI ai;
     private int reach;
     public String race;
 
@@ -29,11 +35,11 @@ public class Opponent extends Entity {
 
     }
 
-    public Ai getAi() {
+    public AI getAi() {
         return ai;
     }
 
-    public void setAi(Ai ai) {
+    public void setAi(AI ai) {
         this.ai = ai;
     }
 

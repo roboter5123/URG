@@ -1,3 +1,8 @@
+package entities;
+
+import Utilities.Board;
+import Utilities.Space;
+
 public class Entity {
 
     private int xPos;

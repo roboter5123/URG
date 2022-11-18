@@ -1,6 +1,7 @@
-import java.util.List;
+package ai;
+import Utilities.Board;
 
-public interface Ai {
+public interface AI {
     public void calculateMovementDirection(Board board);
     public int getSearchRadius();
     public void setSearchRadius(int searchRadius);

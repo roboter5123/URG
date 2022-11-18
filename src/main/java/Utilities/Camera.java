@@ -1,3 +1,7 @@
+package Utilities;
+
+import entities.Entity;
+
 public class Camera {
 
     private Space[][] viewPort;

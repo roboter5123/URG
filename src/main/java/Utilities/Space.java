@@ -1,3 +1,7 @@
+package Utilities;
+
+import entities.Entity;
+
 public class Space {
 
     private Entity characteronField;
@@ -14,7 +18,7 @@ public class Space {
 
     @Override
     public String toString() {
-        return "Space{" +
+        return "Utilities.Space{" +
                 "characteronField=" + characteronField +
                 '}';
     }

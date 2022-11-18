@@ -1,6 +1,11 @@
+package Utilities;
+
+import entities.Entity;
+import entities.Opponent;
+import entities.Player;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Board {
 

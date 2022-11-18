@@ -1,3 +1,8 @@
+import Utilities.Board;
+import Utilities.Room;
+import entities.Opponent;
+import entities.Player;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,13 @@
+package ai;
+
+import Utilities.Board;
+import Utilities.Space;
+import entities.Opponent;
+import entities.Player;
+
 import java.util.*;
 
-public class Orc implements Ai {
+public class Orc implements AI {
 
     private Player player;
     private Opponent opponent;
