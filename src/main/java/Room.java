@@ -4,11 +4,21 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
-public class EdgeRoom {
+public class Room {
+
 
     public static final int ROOM_SIZE = 7;
-    boolean[][] wallPositions;
-    public static int permutations = Objects.requireNonNull(new File("rooms/EdgeRooms").list()).length;
+    private boolean[][] wallPositions;
+    String roomType;
+    private static int permutations;
+
+
+    public Room(String roomType) {
+
+        this.roomType = roomType;
+
+        permutations = Objects.requireNonNull(new File("rooms/" + roomType).list()).length;
+    }
 
     public void fillSpaces(Board board, int[] roomcoord, int rotation) throws FileNotFoundException {
 
@@ -48,7 +58,7 @@ public class EdgeRoom {
         Random random = new Random();
         int roomNumber = random.nextInt(permutations);
 
-        File file = new File("rooms/EdgeRooms/edgeRoom" + roomNumber + ".csv");
+        File file = new File("rooms/"+roomType+"/"+ roomType + roomNumber + ".csv");
 
         Scanner scanner = new Scanner(file);
         int counter = 0;
@@ -75,3 +85,4 @@ public class EdgeRoom {
         return wallPositions;
     }
 }
+

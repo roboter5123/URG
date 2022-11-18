@@ -76,49 +76,49 @@ public class Main {
 //                Corner rooms
                 if (k == 0 && l == 0) {
 
-                    CornerRoom room = new CornerRoom();
+                    Room room = new Room("CornerRoom");
                     room.fillSpaces(board, new int[]{k, l}, 0);
 
                 } else if (k == 0 && l == boardSize - ROOM_SIZE) {
 
-                    CornerRoom room = new CornerRoom();
+                    Room room = new Room("CornerRoom");
                     room.fillSpaces(board, new int[]{k, l}, 1);
 
                 } else if (k == boardSize - ROOM_SIZE && l == boardSize - ROOM_SIZE) {
 
-                    CornerRoom room = new CornerRoom();
+                    Room room = new Room("CornerRoom");
                     room.fillSpaces(board, new int[]{k, l}, 2);
 
                 } else if (k == boardSize - ROOM_SIZE && l == 0) {
 
-                    CornerRoom room = new CornerRoom();
+                    Room room = new Room("CornerRoom");
                     room.fillSpaces(board, new int[]{k, l}, 3);
 
 //                    Edge Rooms
                 } else if (l == 0) {
 
-                    EdgeRoom room = new EdgeRoom();
+                    Room room = new Room("EdgeRoom");
                     room.fillSpaces(board, new int[]{k, l}, 0);
 
                 } else if (k == 0) {
 
-                    EdgeRoom room = new EdgeRoom();
+                    Room room = new Room("EdgeRoom");
                     room.fillSpaces(board, new int[]{k, l}, 1);
 
                 } else if (l == boardSize - ROOM_SIZE) {
 
-                    EdgeRoom room = new EdgeRoom();
+                    Room room = new Room("EdgeRoom");
                     room.fillSpaces(board, new int[]{k, l}, 2);
 
                 } else if (k == boardSize - ROOM_SIZE) {
 
-                    EdgeRoom room = new EdgeRoom();
+                    Room room = new Room("EdgeRoom");
                     room.fillSpaces(board, new int[]{k, l}, 3);
 
                 }  else {
 
-                    CenterRoom room = new CenterRoom();
-                    room.fillSpaces(board, new int[]{k, l});
+                    Room room = new Room("CenterRoom");
+                    room.fillSpaces(board, new int[]{k, l}, 0);
                 }
 
             }
