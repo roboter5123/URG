@@ -1,10 +1,12 @@
-package Utilities;
+package utilities;
 
 import entities.Entity;
 
 public class Space {
 
     private Entity characteronField;
+    private int xPos;
+    private int yPos;
 
     public Space() {}
 
@@ -13,7 +15,17 @@ public class Space {
     }
 
     public void setEntityOnField(Entity characteronField) {
+
         this.characteronField = characteronField;
+
+    }
+
+    public void setxPos(int xPos) {
+        this.xPos = xPos;
+    }
+
+    public void setyPos(int yPos) {
+        this.yPos = yPos;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package entities;
 
-import Utilities.Board;
+import utilities.Board;
 import ai.AI;
 import ai.Orc;
 

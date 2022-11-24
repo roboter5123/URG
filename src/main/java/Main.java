@@ -1,5 +1,6 @@
-import Utilities.Board;
-import Utilities.Room;
+import utilities.Board;
+import utilities.Minimap;
+import utilities.Room;
 import entities.Opponent;
 import entities.Player;
 
@@ -19,6 +20,8 @@ public class Main {
     static int playerMaxHealth = 5;
     static int opponentCount = (int) (0.75 * boardSize);
     static Board board = new Board(boardSize);
+
+    static Minimap minimap = new Minimap(board);
 
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -177,6 +180,9 @@ public class Main {
         System.out.println("\n".repeat(50));
         System.out.println("Untitled Fighting Game by roboter5123");
         System.out.println("Round: " + round + " Highscore: roboter5123 rounds: 102");
+        System.out.println("\n");
+        minimap.updateMinimap(board);
+        System.out.println(minimap.toString());
         System.out.println(board);
         System.out.println("Your Health " + board.getPlayer().getHealth() + "/" + board.getPlayer().getMaxHealth());
     }

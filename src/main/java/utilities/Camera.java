@@ -1,13 +1,12 @@
-package Utilities;
+package utilities;
 
 import entities.Entity;
 
 public class Camera {
 
     private Space[][] viewPort;
-    private String view;
-    private Entity target;
-    private int viewPortSize;
+    private final Entity target;
+    private final int viewPortSize;
 
     public Camera(Entity target, int viewPortSize, Space[][] spaces) {
         this.target = target;
@@ -57,57 +56,31 @@ public class Camera {
 
         updateViewPort(spaces);
 
-        String map = "";
+        StringBuilder map = new StringBuilder();
 
         for (int i = 0; i < viewPort[0].length; i++) {
 
-            for (int j = 0; j < viewPort.length; j++) {
+            map.append("-".repeat(4).repeat(viewPort.length));
+            map.append("\n");
 
-                map += "-".repeat(4);
+            for (Space[] value : viewPort) {
 
-            }
-            map += "\n";
-
-            for (int j = 0; j < viewPort.length; j++) {
-
-                Space curSpace = viewPort[j][i];
-                map += "|";
+                Space curSpace = value[i];
+                map.append("|");
 
                 if (curSpace.getEntityOnField() != null) {
 
-                    map += curSpace.getEntityOnField().getSprite();
+                    map.append(curSpace.getEntityOnField().getSprite());
 
                 } else {
 
-                    map += "   ";
+                    map.append("   ");
                 }
             }
-            map += "|";
-            map += "\n";
+            map.append("|");
+            map.append("\n");
         }
-        map += "====".repeat(viewPort[0].length);
-        view = map;
-        return map;
-
-    }
-
-    public void setViewPort(Space[][] viewPort) {
-        this.viewPort = viewPort;
-    }
-
-    public Entity getTarget() {
-        return target;
-    }
-
-    public void setTarget(Entity target) {
-        this.target = target;
-    }
-
-    public int getViewPortSize() {
-        return viewPortSize;
-    }
-
-    public void setViewPortSize(int viewPortSize) {
-        this.viewPortSize = viewPortSize;
+        map.append("====".repeat(viewPort[0].length));
+        return map.toString();
     }
 }

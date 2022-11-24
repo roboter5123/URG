@@ -1,7 +1,7 @@
 package entities;
 
-import Utilities.Board;
-import Utilities.Space;
+import utilities.Board;
+import utilities.Space;
 
 public class Entity {
 
@@ -58,19 +58,6 @@ public class Entity {
 
     }
 
-    public void heal(int heal){
-
-        if (health + heal <= maxHealth){
-
-        health += heal;
-
-        }else{
-
-            health = maxHealth;
-        }
-
-    }
-
     public int getxPos() {
 
         return xPos;
@@ -109,11 +96,6 @@ public class Entity {
     public void setMaxHealth(int maxHealth) {
 
         this.maxHealth = maxHealth;
-    }
-
-    public int getDmg() {
-
-        return dmg;
     }
 
     public String getSprite() {

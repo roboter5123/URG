@@ -1,4 +1,4 @@
-package Utilities;
+package utilities;
 
 import entities.Entity;
 import entities.Opponent;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Board {
 
-    private Space[][] spaces;
+    private final Space[][] spaces;
 
     private Player player;
 
@@ -27,6 +27,8 @@ public class Board {
             for (int j = 0; j < size; j++) {
 
                 spaces[i][j] = new Space();
+                spaces[i][j].setyPos(i);
+                spaces[i][j].setxPos(j);
             }
         }
 
@@ -35,11 +37,6 @@ public class Board {
     public Space[][] getSpaces() {
 
         return spaces;
-    }
-
-    public void setSpaces(Space[][] spaces) {
-
-        this.spaces = spaces;
     }
 
     public Player getPlayer() {
@@ -76,13 +73,13 @@ public class Board {
 
             this.entities.remove(opponent);
 
-            for (int i = 0; i < spaces.length; i++) {
+            for (Space[] row : spaces) {
 
-                for (int j = 0; j < spaces[i].length; j++) {
+                for (Space space : row) {
 
-                    if (spaces[i][j].getEntityOnField() == opponent) {
+                    if (space.getEntityOnField() == opponent) {
 
-                        spaces[i][j].setEntityOnField(null);
+                        space.setEntityOnField(null);
                         break;
                     }
                 }
