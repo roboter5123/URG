@@ -10,12 +10,10 @@ import java.util.Scanner;
 
 public class Room {
 
-
     public static final int ROOM_SIZE = 7;
     private boolean[][] wallPositions;
     String roomType;
     private static int permutations;
-
 
     public Room(String roomType) {
 
@@ -24,18 +22,18 @@ public class Room {
         permutations = Objects.requireNonNull(new File("rooms/" + roomType).list()).length;
     }
 
-    public void fillSpaces(Board board, int[] roomcoord, int rotation) throws FileNotFoundException {
+    public void fillSpaces(Map map, int[] roomcoord, int rotation, Random random) throws FileNotFoundException {
 
-        Space[][] spaces = board.getSpaces();
-        boolean[][] wallPositions = getWallPositions(rotation);
+        Space[][] spaces = map.getSpaces();
+        boolean[][] wallPositions = getWallPositions(rotation, random);
 
-        for (int r = 0; r < ROOM_SIZE; r++) {
+        for (int y = 0; y < ROOM_SIZE; y++) {
 
-            for (int c = 0; c < ROOM_SIZE; c++) {
+            for (int x = 0; x < ROOM_SIZE; x++) {
 
-                if (wallPositions[r][c]) {
+                if (wallPositions[y][x]) {
 
-                    spaces[r + roomcoord[0]][c + roomcoord[1]].setEntityOnField(new Wall());
+                    spaces[y + (roomcoord[0]*ROOM_SIZE)][x + (roomcoord[1]*ROOM_SIZE)].setEntityOnField(new Wall());
                 }
             }
         }
@@ -55,14 +53,12 @@ public class Room {
         return ret;
     }
 
-
-    public boolean[][] getWallPositions(int rotation) throws FileNotFoundException {
+    public boolean[][] getWallPositions(int rotation, Random random) throws FileNotFoundException {
 
         wallPositions = new boolean[ROOM_SIZE][ROOM_SIZE];
-        Random random = new Random();
         int roomNumber = random.nextInt(permutations);
 
-        File file = new File("rooms/"+roomType+"/"+ roomType + roomNumber + ".csv");
+        File file = new File("rooms/" + roomType + "/" + roomType + roomNumber + ".csv");
 
         Scanner scanner = new Scanner(file);
         int counter = 0;
