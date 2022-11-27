@@ -17,6 +17,7 @@ public class Level {
     final int ROOMSIZE = 7;
     int mapSize;
     private Camera camera;
+    private Minimap minimap;
 
     public Level(int mapSize, int playerMaxHealth, int opponentCount) {
         init(mapSize, playerMaxHealth,opponentCount);
@@ -30,6 +31,7 @@ public class Level {
         player = new Player(playerMaxHealth);
         map.placeEntity(player);
         camera = new Camera(this.player, map.getSpaces());
+        minimap = new Minimap(map);
         generateOpponents(opponentCount);
     }
 
@@ -57,6 +59,8 @@ public class Level {
 
             for (int i = 0; i < player.getReach(); i++) {
 
+                minimap.updateMinimap(map);
+                System.out.println(minimap.toString());
                 System.out.println(camera.getMap(map.getSpaces()));
                 System.out.println(player.getHealth());
                 player.move(map);
