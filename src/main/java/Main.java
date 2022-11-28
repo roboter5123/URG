@@ -3,9 +3,12 @@ import java.util.Scanner;
 
 public class Main {
 
-
-
     public static void main(String[] args) {
+
+        play();
+    }
+
+    public static void play(){
 
         Level level = init();
         level.gameLoop();
