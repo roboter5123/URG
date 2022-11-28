@@ -14,16 +14,16 @@ public class Minimap {
     boolean[][] opponents;
     boolean[][] player;
 
-    public Minimap(Board board) {
-        Space[][] spaces = board.getSpaces();
+    public Minimap(Map map) {
+        Space[][] spaces = map.getSpaces();
         this.opponents = new boolean[BOARDSIZE/ROOMSIZE][BOARDSIZE/ROOMSIZE];
         this.player = new boolean[BOARDSIZE/ROOMSIZE][BOARDSIZE/ROOMSIZE];
         findMaps(spaces);
     }
 
-    public void updateMinimap(Board board){
+    public void updateMinimap(Map map){
 
-        Space[][] spaces = board.getSpaces();
+        Space[][] spaces = map.getSpaces();
         findMaps(spaces);
     }
 
@@ -54,11 +54,11 @@ public class Minimap {
             }
         }
 
-        for (int i = 0; i < this.opponents.length; i++) {
-            for (int j = 0; j < this.opponents[i].length; j++) {
+        for (int y = 0; y < this.opponents.length; y++) {
+            for (int x = 0; x < this.opponents[y].length; x++) {
 
-                this.opponents[i][j] = false;
-                this.player[i][j] = false;
+                this.opponents[y][x] = false;
+                this.player[y][x] = false;
             }
         }
 

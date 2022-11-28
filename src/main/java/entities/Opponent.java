@@ -1,22 +1,19 @@
 package entities;
 
-import utilities.Board;
+import utilities.Map;
 import ai.AI;
 import ai.Orc;
+
+import java.util.Random;
 
 public class Opponent extends Entity {
 
     private AI ai;
-    private int reach;
     public String race;
 
+    public Opponent(Player player, OponentType type) {
 
-
-    public Opponent() {}
-
-    public Opponent(Player player, String type) {
-
-        if (type == "orc") {
+        if (type == OponentType.ORC) {
 
             this.ai = new Orc(player, this);
             this.setSprite("Orc");
@@ -26,36 +23,28 @@ public class Opponent extends Entity {
         this.setHealth(this.getMaxHealth());
         this.setDmg(ai.getDmg());
         this.setReach(ai.getReach());
-
     }
 
-    public void calculateMovement(Board board) {
+    public void move(Map map, Random random) {
+//      TODO
+//        Fix them moving 2 fields when not in sight and rework pathfinding in general
+        String move = this.ai.calculateMovementDirection(map, random);
 
-        this.ai.calculateMovementDirection(board);
+        if (move == null) {
 
-    }
+            return;
+        }
 
-    public AI getAi() {
-        return ai;
-    }
-
-    public void setAi(AI ai) {
-        this.ai = ai;
+        super.move(Integer.parseInt(move.split(" ")[0] + 1) * ai.getReach(), move.charAt(2), map);
     }
 
     public int getReach() {
+
         return reach;
     }
 
     public void setReach(int reach) {
+
         this.reach = reach;
-    }
-
-    public String getRace() {
-        return race;
-    }
-
-    public void setRace(String race) {
-        this.race = race;
     }
 }

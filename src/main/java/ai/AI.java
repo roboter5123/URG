@@ -1,8 +1,10 @@
 package ai;
-import utilities.Board;
+import utilities.Map;
+
+import java.util.Random;
 
 public interface AI {
-    void calculateMovementDirection(Board board);
+    String calculateMovementDirection(Map map, Random random);
     int getMaxHealth();
     int getDmg();
     int getReach();

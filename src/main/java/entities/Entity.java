@@ -1,6 +1,6 @@
 package entities;
 
-import utilities.Board;
+import utilities.Map;
 import utilities.Space;
 
 public class Entity {
@@ -10,41 +10,37 @@ public class Entity {
     private int maxHealth = 10;
     private int health;
     private int dmg;
-
+    int reach;
     private String sprite;
 
     public Entity() {}
 
-    public void move(int moves, char direction, Board board) {
+    public void move(int moves, char direction, Map map) {
 
-        Space[][] spaces = board.getSpaces();
-        Space curSpace = spaces[xPos][yPos];
+        Space[][] spaces = map.getSpaces();
+        Space curSpace = spaces[yPos][xPos];
 
         if (direction == 'x' && xPos + moves != spaces.length && xPos + moves >= 0) {
 
-            if (spaces[xPos + moves][yPos].getEntityOnField() == null) {
+            if (spaces[yPos ][xPos+ moves].getEntityOnField() == null) {
 
                 curSpace.setEntityOnField(null);
                 xPos += moves;
-
             } else if (spaces[xPos + moves][yPos].getEntityOnField() != this) {
 
-                attack(spaces[xPos+moves][yPos].getEntityOnField());
+                attack(spaces[yPos][xPos + moves].getEntityOnField());
             }
-
         } else if (direction == 'y' && yPos + moves != spaces.length && yPos + moves >= 0) {
 
-            if (spaces[xPos][yPos + moves].getEntityOnField() == null) {
+            if (spaces[yPos + moves][xPos].getEntityOnField() == null) {
                 curSpace.setEntityOnField(null);
                 yPos += moves;
+            } else if (spaces[yPos + moves][xPos].getEntityOnField() != this) {
 
-            } else if (spaces[xPos][yPos + moves].getEntityOnField() != this){
-
-                attack(spaces[xPos][yPos+moves].getEntityOnField());
+                attack(spaces[yPos + moves][xPos].getEntityOnField());
             }
         }
-        spaces[xPos][yPos].setEntityOnField(this);
-
+        spaces[yPos][xPos].setEntityOnField(this);
     }
 
     public void attack(Entity entity) {
@@ -55,7 +51,6 @@ public class Entity {
     public void looseHealth(int dmg) {
 
         health -= dmg;
-
     }
 
     public int getxPos() {
@@ -99,10 +94,12 @@ public class Entity {
     }
 
     public String getSprite() {
+
         return sprite;
     }
 
     public void setSprite(String sprite) {
+
         this.sprite = sprite;
     }
 
@@ -113,7 +110,8 @@ public class Entity {
 
     @Override
     public String toString() {
-        return this.getClass() +"{" +
+
+        return this.getClass() + "{" +
                 "xPos=" + xPos +
                 ", yPos=" + yPos +
                 '}';
