@@ -50,7 +50,7 @@ public class Camera {
         }
     }
 
-    public String getMap(Space[][] spaces) {
+    public String getMapString(Space[][] spaces) {
 
         updateViewPort(spaces);
 
@@ -79,5 +79,12 @@ public class Camera {
         }
         map.append("====".repeat(viewPort[0].length));
         return map.toString();
+    }
+
+    public Space[][] getMap(Space[][] spaces){
+
+        updateViewPort(spaces);
+
+        return viewPort;
     }
 }
