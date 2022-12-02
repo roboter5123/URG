@@ -1,5 +1,6 @@
 package entities;
 
+import javafx.scene.image.Image;
 import utilities.Map;
 import utilities.Space;
 
@@ -12,6 +13,8 @@ public class Entity {
     private int dmg;
     int reach;
     private String sprite;
+
+    private Image image;
 
     public Entity() {}
 
@@ -115,5 +118,15 @@ public class Entity {
                 "xPos=" + xPos +
                 ", yPos=" + yPos +
                 '}';
+    }
+
+    public Image getImage() {
+
+        return image;
+    }
+
+    public void setImage(Image image) {
+
+        this.image = image;
     }
 }
