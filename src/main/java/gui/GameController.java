@@ -12,7 +12,6 @@ import utilities.Level;
 import utilities.Space;
 
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
@@ -86,50 +85,57 @@ public class GameController implements Initializable {
         bgGC.clearRect(0, 0, layerWidth, layerHeight);
 
         double cellWidth = layerWidth / view.length;
-        double cellheight = layerHeight / view[0].length;
+        double cellHeight = layerHeight / view[0].length;
 
+        Image floor0 = new Image("entities/Floor0.png");
+        Image floor1 = new Image("entities/Floor1.png");
         for (int y = 0; y < view.length; y++) {
 
             for (int x = 0; x < view[y].length; x++) {
 
                 Entity entity = view[y][x].getEntityOnField();
-                new Sprite(x * cellWidth, y  * cellheight, cellheight , cellWidth, new Image("entities/Floor"+((view[y][x].getxPos() + view[y][x].getyPos())%2)+".png")).draw(bgGC);
+                System.out.println((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0);
+                if ((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0) {
+                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor0 ).draw(bgGC);
+                }else{
 
+                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor1 ).draw(bgGC);
+                }
                 if (null != entity) {
 
-                    if (entity instanceof Wall){
+                    if (entity instanceof Wall) {
 
-                        new Sprite(x * cellWidth, y * cellheight - (cellheight * 0.75), cellheight * 1.75, cellWidth, entity.getImage()).draw(gameGC);
-                    }else{
+                        new Sprite(x * cellWidth, y * cellHeight - (cellHeight * 0.75), cellHeight * 1.75, cellWidth, entity.getImage()).draw(gameGC);
+                    } else {
 
-                        new Sprite(x * cellWidth, y * cellheight, cellheight, cellWidth, entity.getImage()).draw(gameGC);
+                        new Sprite(x * cellWidth- (cellHeight * 0.05), y * cellHeight - (cellHeight * 0.375), cellHeight * 1.1 , cellWidth * 1.1, entity.getImage()).draw(gameGC);
                     }
                 }
             }
         }
     }
+
     private void drawUI(Space[][] view) {
 
         double layerWidth = UILayer.getWidth();
         double layerHeight = UILayer.getHeight();
-        double cellWidth = layerWidth / view.length/2;
-        double cellHeight  = layerHeight / view.length/2;
+        double cellWidth = layerWidth / view.length / 2;
+        double cellHeight = layerHeight / view.length / 2;
         GraphicsContext UIGC = UILayer.getGraphicsContext2D();
-        UIGC.clearRect(0,0,layerWidth,layerHeight);
+        UIGC.clearRect(0, 0, layerWidth, layerHeight);
         int playerHealth = level.getPlayer().getHealth();
         double lastHeartX = 0;
         int counter = 0;
-        for (int i = 0; i < playerHealth; i+=2) {
+        for (int i = 0; i < playerHealth; i += 2) {
 
-            new Sprite(cellWidth * counter, 0,cellHeight,cellWidth,new Image("uielements/FullHeart.png")).draw(UIGC);
+            new Sprite(cellWidth * counter, 0, cellHeight, cellWidth, new Image("uielements/FullHeart.png")).draw(UIGC);
             lastHeartX = counter * cellWidth;
             counter++;
         }
 
-        if (playerHealth% 2 != 0){
+        if (playerHealth % 2 != 0) {
 
-            new Sprite(lastHeartX, 0,cellHeight,cellWidth,new Image("uielements/HalfHeart.png")).draw(UIGC);
-
+            new Sprite(lastHeartX, 0, cellHeight, cellWidth, new Image("uielements/HalfHeart.png")).draw(UIGC);
         }
     }
 
@@ -140,8 +146,6 @@ public class GameController implements Initializable {
         drawGameAndBG(view);
         drawUI(view);
     }
-
-
 
     public void move(KeyCode code) throws InterruptedException {
 

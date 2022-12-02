@@ -30,7 +30,7 @@ public class Level {
 
     public void init(int mapSize, int playerMaxHealth, int opponentCount) {
 
-        random = new Random();
+        random = new Random(1);
         this.mapSize = mapSize;
         map = new Map(mapSize, ROOMSIZE, random);
         player = new Player(playerMaxHealth);
