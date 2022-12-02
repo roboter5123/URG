@@ -18,17 +18,19 @@ public class Level {
     private int mapSize;
     private Camera camera;
     private Minimap minimap;
-    private int playerRound =0;
-    boolean gameOver = false;
-    boolean isPlayerAlive = true;
+    private int playerRound = 0;
+    private boolean gameOver = false;
+
+    private boolean isPlayerAlive = true;
 
     public Level(int mapSize, int playerMaxHealth, int opponentCount) {
-        init(mapSize, playerMaxHealth,opponentCount);
+
+        init(mapSize, playerMaxHealth, opponentCount);
     }
 
     public void init(int mapSize, int playerMaxHealth, int opponentCount) {
 
-        random = new Random(1);
+        random = new Random();
         this.mapSize = mapSize;
         map = new Map(mapSize, ROOMSIZE, random);
         player = new Player(playerMaxHealth);
@@ -70,20 +72,21 @@ public class Level {
             moveOpponents();
 
             isGameOver();
-
         }
-
     }
 
-    public void isGameOver() {
+    public boolean isGameOver() {
+
         if (player.getHealth() <= 0) {
 
             gameOver = true;
             isPlayerAlive = false;
         }
+        return gameOver;
     }
 
     public void moveOpponents() {
+
         for (Opponent opponent : opponentList) {
 
             for (int i = 0; i < opponent.getReach(); i++) {
@@ -93,9 +96,9 @@ public class Level {
         }
     }
 
-    public void checkOpponentHealth() {
+    public boolean checkOpponentHealth() {
 
-        for (int i = 0; i < opponentList.size() ; i++) {
+        for (int i = 0; i < opponentList.size(); i++) {
             Opponent opponent = opponentList.get(i);
 
             if (opponent.getHealth() == 0) {
@@ -108,30 +111,42 @@ public class Level {
                 opponentList.remove(opponent);
             }
         }
+
+        return opponentList.isEmpty();
     }
 
     public Player getPlayer() {
+
         return player;
     }
 
     public Map getMap() {
+
         return map;
     }
 
     public void setMap(Map map) {
+
         this.map = map;
     }
 
     public Camera getCamera() {
+
         return camera;
     }
 
-
     public int getPlayerRound() {
+
         return playerRound;
     }
 
     public void addPlayerRound() {
+
         this.playerRound += 1;
+    }
+
+    public boolean isPlayerAlive() {
+
+        return isPlayerAlive;
     }
 }

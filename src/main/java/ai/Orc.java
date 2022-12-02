@@ -32,75 +32,80 @@ public class Orc implements AI {
             connectNodes(nodes);
             NavigationNode startNode = getStartNode(nodes);
             NavigationNode endNode = getEndNode(nodes);
-            return solveAStar(startNode, endNode);
+            return solveAStar(startNode, endNode, map,random);
         } else {
 
-            List<String> directions = new ArrayList<>();
-            Space[][] spaces = map.getSpaces();
-            int xPos = opponent.getxPos();
-            int yPos = opponent.getyPos();
-
-            if (xPos == spaces[yPos].length - 1) {
-
-                if (spaces[yPos][xPos - reach].getEntityOnField() == null) {
-
-                    directions.add("- x");
-                }
-            } else if (xPos == 0) {
-
-                if (spaces[yPos][xPos + reach].getEntityOnField() == null) {
-
-                    directions.add("+ x");
-                }
-            } else {
-
-                if (spaces[yPos][xPos + reach].getEntityOnField() == null) {
-
-                    directions.add("+ x");
-                }
-
-                if (spaces[yPos][xPos - reach].getEntityOnField() == null) {
-
-                    directions.add("- x");
-                }
-            }
-
-            if (yPos == spaces.length - 1) {
-
-                if (spaces[yPos - reach][xPos].getEntityOnField() == null) {
-
-                    directions.add("- y");
-                }
-            } else if (yPos == 0) {
-
-                if (spaces[yPos + reach][xPos].getEntityOnField() == null) {
-
-                    directions.add("+ y");
-                }
-            } else {
-
-                if (spaces[yPos + reach][xPos].getEntityOnField() == null) {
-
-                    directions.add("+ y");
-                }
-
-                if (spaces[yPos - reach][xPos].getEntityOnField() == null) {
-
-                    directions.add("- y");
-                }
-            }
-
-            if (directions.size() == 0) {
-
-                return null;
-            }
-
-            int randomIndex = random.nextInt(directions.size());
-            return directions.get(randomIndex);
+            return randomDirection(map, random);
         }
     }
 
-    private String solveAStar(NavigationNode startNode, NavigationNode endNode) {
+    private String randomDirection(Map map, Random random) {
+
+        List<String> directions = new ArrayList<>();
+        Space[][] spaces = map.getSpaces();
+        int xPos = opponent.getxPos();
+        int yPos = opponent.getyPos();
+
+        if (xPos == spaces[yPos].length - 1) {
+
+            if (spaces[yPos][xPos - reach].getEntityOnField() == null) {
+
+                directions.add("- x");
+            }
+        } else if (xPos == 0) {
+
+            if (spaces[yPos][xPos + reach].getEntityOnField() == null) {
+
+                directions.add("+ x");
+            }
+        } else {
+
+            if (spaces[yPos][xPos + reach].getEntityOnField() == null) {
+
+                directions.add("+ x");
+            }
+
+            if (spaces[yPos][xPos - reach].getEntityOnField() == null) {
+
+                directions.add("- x");
+            }
+        }
+
+        if (yPos == spaces.length - 1) {
+
+            if (spaces[yPos - reach][xPos].getEntityOnField() == null) {
+
+                directions.add("- y");
+            }
+        } else if (yPos == 0) {
+
+            if (spaces[yPos + reach][xPos].getEntityOnField() == null) {
+
+                directions.add("+ y");
+            }
+        } else {
+
+            if (spaces[yPos + reach][xPos].getEntityOnField() == null) {
+
+                directions.add("+ y");
+            }
+
+            if (spaces[yPos - reach][xPos].getEntityOnField() == null) {
+
+                directions.add("- y");
+            }
+        }
+
+        if (directions.size() == 0) {
+
+            return null;
+        }
+
+        int randomIndex = random.nextInt(directions.size());
+        return directions.get(randomIndex);
+    }
+
+    private String solveAStar(NavigationNode startNode, NavigationNode endNode, Map map, Random random) {
 
         NavigationNode curNode = startNode;
         curNode.localGoal = 0;
@@ -148,9 +153,14 @@ public class Orc implements AI {
             }
         }
         curNode = endNode;
+
         while (true) {
 
-            if (curNode.parent.equals(startNode)) {
+            if (curNode.parent == null) {
+
+                return randomDirection(map,random);
+
+            } else if (curNode.parent.equals(startNode)) {
 
                 int moveX = startNode.x - curNode.x;
                 int moveY = startNode.y - curNode.y;

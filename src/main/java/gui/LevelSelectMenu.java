@@ -38,17 +38,23 @@ public class LevelSelectMenu {
         root = loader.load();
         GameController gamecontroller = loader.getController();
         Button source = (Button) event.getSource();
-        gamecontroller.startGame(source.getText());
+
         System.out.println(source.getText());
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         scene.setOnKeyPressed(event1 -> {
 
             KeyCode code = event1.getCode();
-            if (KeyCode.W.equals(code) || KeyCode.A.equals(code) || KeyCode.S.equals(code) || KeyCode.D.equals(code))
-                gamecontroller.move(code);
+            if (KeyCode.W.equals(code) || KeyCode.A.equals(code) || KeyCode.S.equals(code) || KeyCode.D.equals(code)) {
+                try {
+                    gamecontroller.move(code);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
         stage.setScene(scene);
+        gamecontroller.startGame(source.getText());
         stage.show();
     }
 }

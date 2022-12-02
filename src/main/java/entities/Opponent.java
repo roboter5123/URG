@@ -1,5 +1,6 @@
 package entities;
 
+import javafx.scene.image.Image;
 import utilities.Map;
 import ai.AI;
 import ai.Orc;
@@ -17,6 +18,8 @@ public class Opponent extends Entity {
 
             this.ai = new Orc(player, this);
             this.setSprite("Orc");
+            this.setImage(new Image("entities/Orc.png"));
+
         }
 
         this.setMaxHealth(ai.getMaxHealth());

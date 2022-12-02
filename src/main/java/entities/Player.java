@@ -1,5 +1,6 @@
 package entities;
 
+import javafx.scene.image.Image;
 import utilities.Map;
 
 public class Player extends Entity {
@@ -12,6 +13,7 @@ public class Player extends Entity {
         this.setHealth(maxHealth);
         this.setDmg(1);
         this.setSprite(" P ");
+        this.setImage(new Image("entities/Player.png"));
     }
 
     public void move(Map map, String input){

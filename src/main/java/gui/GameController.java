@@ -1,16 +1,12 @@
 package gui;
 
 import entities.Entity;
-import entities.Opponent;
-import entities.Player;
-import entities.Wall;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.AnchorPane;
 import utilities.Level;
 import utilities.Space;
 
@@ -19,9 +15,10 @@ import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
 
-    @FXML
-    GridPane root;
-
+    public AnchorPane root;
+    public Canvas backgroundLayer;
+    public Canvas gameLayer;
+    public Canvas UILayer;
     Level level;
     int mapSize;
     int playerMaxHealth;
@@ -30,6 +27,17 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        root.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (this.level != null) {
+                drawScreen();
+            }
+        });
+
+        root.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (this.level != null) {
+                drawScreen();
+            }
+        });
     }
 
     public void startGame(String text) {
@@ -51,48 +59,106 @@ public class GameController implements Initializable {
         playerMaxHealth = mapSize * 2 + 1;
         opponentCount = mapSize * 2;
         level = new Level(mapSize, playerMaxHealth, opponentCount);
-        drawMap();
+        drawScreen();
     }
 
-    public void drawMap() {
+    public void scaleCanvases() {
 
-        Space[][] view = level.getCamera().getMap(level.getMap().getSpaces());
+        double windowHeight = root.getHeight();
+        double windowWidth = root.getWidth();
+        backgroundLayer.setHeight(windowHeight);
+        backgroundLayer.setWidth(windowWidth);
+        gameLayer.setWidth(windowWidth);
+        gameLayer.setHeight(windowHeight);
+        UILayer.setHeight(windowHeight);
+        UILayer.setWidth(windowWidth);
+    }
+
+    public void drawGameAndBG(Space[][] view) {
+
+        double layerWidth = gameLayer.getWidth();
+        double layerHeight = gameLayer.getHeight();
+        GraphicsContext gameGC = gameLayer.getGraphicsContext2D();
+        gameGC.clearRect(0, 0, layerWidth, layerHeight);
+        GraphicsContext bgGC = backgroundLayer.getGraphicsContext2D();
+        bgGC.clearRect(0, 0, layerWidth, layerHeight);
+
+        double cellWidth = layerWidth / view.length;
+        double cellheight = layerHeight / view[0].length;
 
         for (int y = 0; y < view.length; y++) {
 
             for (int x = 0; x < view[y].length; x++) {
 
                 Entity entity = view[y][x].getEntityOnField();
-                Rectangle floor = new Rectangle(20.0, 20.0, Paint.valueOf("#979797"));
-                root.add(floor, x, y);
-                if (entity instanceof Player) {
+                new Sprite(x * cellWidth, y  , cellheight , cellWidth, new Image("entities/Floor.png")).draw(bgGC);
 
-                    Circle player = new Circle(10.0, Paint.valueOf("green"));
-                    root.add(player, x, y);
-                } else if (entity instanceof Opponent) {
+                if (null != entity) {
 
-                    Circle opponent = new Circle(10.0, Paint.valueOf("red"));
-                    root.add(opponent, x, y);
-                } else if (entity instanceof Wall) {
+                    new Sprite(x * cellWidth, y * cellheight, cellheight, cellWidth, entity.getImage()).draw(gameGC);
 
-                    Rectangle wall = new Rectangle(20.0, 20.0, Paint.valueOf("#717171"));
-                    root.add(wall, x, y);
                 }
             }
         }
     }
+    private void drawUI(Space[][] view) {
 
-    public void move(KeyCode code) {
+        double layerWidth = UILayer.getWidth();
+        double layerHeight = UILayer.getHeight();
+        double cellWidth = layerWidth / view.length/2;
+        double cellHeight  = layerHeight / view.length/2;
+        GraphicsContext UIGC = UILayer.getGraphicsContext2D();
+        UIGC.clearRect(0,0,layerWidth,layerHeight);
+        int playerHealth = level.getPlayer().getHealth();
+        double lastHeartX = 0;
+        int counter = 0;
+        for (int i = 0; i < playerHealth; i+=2) {
+
+            new Sprite(cellWidth * counter, 0,cellHeight,cellWidth,new Image("uielements/FullHeart.png")).draw(UIGC);
+            lastHeartX = counter * cellWidth;
+            counter++;
+        }
+
+        if (playerHealth% 2 != 0){
+
+            new Sprite(lastHeartX, 0,cellHeight,cellWidth,new Image("uielements/HalfHeart.png")).draw(UIGC);
+
+        }
+    }
+
+    public void drawScreen() {
+
+        Space[][] view = level.getCamera().getMap(level.getMap().getSpaces());
+        scaleCanvases();
+        drawGameAndBG(view);
+        drawUI(view);
+    }
+
+
+
+    public void move(KeyCode code) throws InterruptedException {
 
         level.getPlayer().move(level.getMap(), code.toString());
         level.checkOpponentHealth();
         level.addPlayerRound();
 
-        if (level.getPlayerRound() % 2 == 0){
+        if (level.getPlayerRound() % 2 == 0) {
 
             level.moveOpponents();
         }
 
-        drawMap();
+        if (level.isGameOver() && !level.isPlayerAlive()) {
+
+            drawScreen();
+            System.exit(0);
+        }
+
+        if (level.checkOpponentHealth()) {
+
+            drawScreen();
+            System.exit(0);
+        }
+
+        drawScreen();
     }
 }
