@@ -28,6 +28,16 @@ public class Space {
         this.yPos = yPos;
     }
 
+    public int getxPos() {
+
+        return xPos;
+    }
+
+    public int getyPos() {
+
+        return yPos;
+    }
+
     @Override
     public String toString() {
         return "Utilities.Space{" +

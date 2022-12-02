@@ -290,7 +290,7 @@ public class Orc implements AI {
 
     public int getDmg() {
 
-        int dmg = 2;
+        int dmg = 1;
         return dmg;
     }
 

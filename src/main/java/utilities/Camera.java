@@ -1,6 +1,7 @@
 package utilities;
 
 import entities.Entity;
+import entities.Wall;
 
 public class Camera {
 
@@ -42,6 +43,7 @@ public class Camera {
                 if (y < 0 || x < 0 || y >= spaces.length || x >= spaces[y].length) {
 
                     viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)] = new Space();
+                    viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)].setEntityOnField(new Wall());
                 } else {
 
                     viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)] = spaces[y][x];

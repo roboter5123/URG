@@ -1,6 +1,7 @@
 package gui;
 
 import entities.Entity;
+import entities.Wall;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,6 +12,7 @@ import utilities.Level;
 import utilities.Space;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable {
@@ -91,12 +93,17 @@ public class GameController implements Initializable {
             for (int x = 0; x < view[y].length; x++) {
 
                 Entity entity = view[y][x].getEntityOnField();
-                new Sprite(x * cellWidth, y  , cellheight , cellWidth, new Image("entities/Floor.png")).draw(bgGC);
+                new Sprite(x * cellWidth, y  * cellheight, cellheight , cellWidth, new Image("entities/Floor"+((view[y][x].getxPos() + view[y][x].getyPos())%2)+".png")).draw(bgGC);
 
                 if (null != entity) {
 
-                    new Sprite(x * cellWidth, y * cellheight, cellheight, cellWidth, entity.getImage()).draw(gameGC);
+                    if (entity instanceof Wall){
 
+                        new Sprite(x * cellWidth, y * cellheight - (cellheight * 0.75), cellheight * 1.75, cellWidth, entity.getImage()).draw(gameGC);
+                    }else{
+
+                        new Sprite(x * cellWidth, y * cellheight, cellheight, cellWidth, entity.getImage()).draw(gameGC);
+                    }
                 }
             }
         }
