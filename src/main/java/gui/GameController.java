@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import utilities.Level;
 import utilities.Space;
+import utilities.StatusCode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -94,7 +95,6 @@ public class GameController implements Initializable {
             for (int x = 0; x < view[y].length; x++) {
 
                 Entity entity = view[y][x].getEntityOnField();
-                System.out.println((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0);
                 if ((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0) {
                     new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor0 ).draw(bgGC);
                 }else{
@@ -148,28 +148,21 @@ public class GameController implements Initializable {
     }
 
     public void move(KeyCode code) throws InterruptedException {
-
-        level.getPlayer().move(level.getMap(), code.toString());
-        level.checkOpponentHealth();
-        level.addPlayerRound();
-
-        if (level.getPlayerRound() % 2 == 0) {
-
-            level.moveOpponents();
-        }
-
-        if (level.isGameOver() && !level.isPlayerAlive()) {
-
-            drawScreen();
-            System.exit(0);
-        }
-
-        if (level.checkOpponentHealth()) {
-
-            drawScreen();
-            System.exit(0);
-        }
-
+        long startTime = System.currentTimeMillis();
+        StatusCode statuscode = level.play(code);
+        long endTime = System.currentTimeMillis();
+        System.out.println("level calculaion took " + (endTime - startTime) + " ms");
+        startTime = endTime;
         drawScreen();
+        endTime = System.currentTimeMillis();
+        System.out.println("sdrawing took " + (endTime - startTime) + " msd");
+         if (statuscode == StatusCode.PLAYER_WON){
+
+             System.exit(0);
+
+        }else if (statuscode == StatusCode.PLAYER_LOST){
+
+             System.exit(0);
+         }
     }
 }

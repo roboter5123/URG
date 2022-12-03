@@ -3,19 +3,18 @@ package utilities;
 import entities.OponentType;
 import entities.Opponent;
 import entities.Player;
+import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Level {
-
     private Player player;
     private List<Opponent> opponentList;
     private Map map;
     private Random random;
     final int ROOMSIZE = 7;
-    private int mapSize;
     private Camera camera;
     private Minimap minimap;
     private int playerRound = 0;
@@ -31,7 +30,6 @@ public class Level {
     public void init(int mapSize, int playerMaxHealth, int opponentCount) {
 
         random = new Random(1);
-        this.mapSize = mapSize;
         map = new Map(mapSize, ROOMSIZE, random);
         player = new Player(playerMaxHealth);
         map.placeEntity(player);
@@ -75,14 +73,18 @@ public class Level {
         }
     }
 
-    public boolean isGameOver() {
+    public void isGameOver() {
 
         if (player.getHealth() <= 0) {
 
             gameOver = true;
             isPlayerAlive = false;
+
+        }else if(checkOpponentHealth()){
+
+            gameOver = true;
+            isPlayerAlive = true;
         }
-        return gameOver;
     }
 
     public void moveOpponents() {
@@ -144,9 +146,33 @@ public class Level {
 
         this.playerRound += 1;
     }
+    
+    public StatusCode play(KeyCode code) {
 
-    public boolean isPlayerAlive() {
+        player.move(getMap(), code.toString());
+        isGameOver();
+        addPlayerRound();
 
-        return isPlayerAlive;
+        if (getPlayerRound() % 2 == 0) {
+
+            moveOpponents();
+        }
+
+        isGameOver();
+
+        if (gameOver && isPlayerAlive){
+
+            return StatusCode.PLAYER_WON;
+
+        } else if (gameOver && !isPlayerAlive) {
+
+            return StatusCode.PLAYER_LOST;
+
+        }else{
+
+            return StatusCode.GAME_ON;
+        }
+
+
     }
 }
