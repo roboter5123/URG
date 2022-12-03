@@ -1,3 +1,4 @@
+import javafx.scene.Parent;
 package gui;
 
 import javafx.event.ActionEvent;
