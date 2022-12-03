@@ -7,10 +7,9 @@ import ai.Orc;
 
 import java.util.Random;
 
-public class Opponent extends Entity {
+public class Opponent extends Entity implements Interactable {
 
     private AI ai;
-    public String race;
 
     public Opponent(Player player, OponentType type) {
 
@@ -22,6 +21,7 @@ public class Opponent extends Entity {
 
         }
 
+        assert ai != null;
         this.setMaxHealth(ai.getMaxHealth());
         this.setHealth(this.getMaxHealth());
         this.setDmg(ai.getDmg());
@@ -29,8 +29,7 @@ public class Opponent extends Entity {
     }
 
     public void move(Map map, Random random) {
-//      TODO
-//        Fix them moving 2 fields when not in sight and rework pathfinding in general
+
         String move = this.ai.calculateMovementDirection(map, random);
 
         if (move == null) {
@@ -49,5 +48,11 @@ public class Opponent extends Entity {
     public void setReach(int reach) {
 
         this.reach = reach;
+    }
+
+    @Override
+    public void interact(Entity entity) {
+
+        this.looseHealth(entity.getDmg());
     }
 }

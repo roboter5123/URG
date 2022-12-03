@@ -3,7 +3,7 @@ package entities;
 import javafx.scene.image.Image;
 import utilities.Map;
 
-public class Player extends Entity {
+public class Player extends Entity implements Interactable {
 
     private final int reach = 2;
 
@@ -29,6 +29,15 @@ public class Player extends Entity {
     public int getReach() {
 
         return reach;
+    }
+
+    @Override
+    public void interact(Entity entity) {
+
+        if (entity instanceof Opponent){
+
+            this.looseHealth(entity.getDmg());
+        }
     }
 }
 

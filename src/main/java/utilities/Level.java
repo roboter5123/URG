@@ -146,7 +146,7 @@ public class Level {
 
         this.playerRound += 1;
     }
-    
+
     public StatusCode play(KeyCode code) {
 
         player.move(getMap(), code.toString());

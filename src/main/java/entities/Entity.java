@@ -11,6 +11,12 @@ public class Entity {
     private int maxHealth = 10;
     private int health;
     private int dmg;
+
+    public int getDmg() {
+
+        return dmg;
+    }
+
     int reach;
     private String sprite;
 
@@ -25,30 +31,31 @@ public class Entity {
 
         if (direction == 'x' && xPos + moves != spaces.length && xPos + moves >= 0) {
 
-            if (spaces[yPos ][xPos+ moves].getEntityOnField() == null) {
+            Entity entity = spaces[yPos ][xPos+ moves].getEntityOnField();
+
+            if (entity == null) {
 
                 curSpace.setEntityOnField(null);
                 xPos += moves;
-            } else if (spaces[xPos + moves][yPos].getEntityOnField() != this) {
+            } else if (entity != this && entity instanceof  Interactable) {
 
-                attack(spaces[yPos][xPos + moves].getEntityOnField());
+                ((Interactable) entity).interact(this);
             }
         } else if (direction == 'y' && yPos + moves != spaces.length && yPos + moves >= 0) {
 
-            if (spaces[yPos + moves][xPos].getEntityOnField() == null) {
+            Entity entity = spaces[yPos + moves][xPos].getEntityOnField();
+
+            if (entity== null) {
+
                 curSpace.setEntityOnField(null);
                 yPos += moves;
-            } else if (spaces[yPos + moves][xPos].getEntityOnField() != this) {
 
-                attack(spaces[yPos + moves][xPos].getEntityOnField());
+            } else if (entity != this && entity instanceof  Interactable) {
+
+                ((Interactable) entity).interact(this);
             }
         }
         spaces[yPos][xPos].setEntityOnField(this);
-    }
-
-    public void attack(Entity entity) {
-
-        entity.looseHealth(dmg);
     }
 
     public void looseHealth(int dmg) {
