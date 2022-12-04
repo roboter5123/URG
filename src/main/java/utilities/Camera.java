@@ -52,37 +52,6 @@ public class Camera {
         }
     }
 
-    public String getMapString(Space[][] spaces) {
-
-        updateViewPort(spaces);
-
-        StringBuilder map = new StringBuilder();
-
-        for (int y = 0; y < viewPort[0].length; y++) {
-
-            map.append("-".repeat(4).repeat(viewPort.length));
-            map.append("\n");
-
-            for (int x = 0; x < viewPort[y].length; x++) {
-
-                Space curSpace = viewPort[y][x];
-                map.append("|");
-
-                if (curSpace.getEntityOnField() != null) {
-
-                    map.append(curSpace.getEntityOnField().getSprite());
-                } else {
-
-                    map.append("   ");
-                }
-            }
-            map.append("|");
-            map.append("\n");
-        }
-        map.append("====".repeat(viewPort[0].length));
-        return map.toString();
-    }
-
     public Space[][] getMap(Space[][] spaces){
 
         updateViewPort(spaces);

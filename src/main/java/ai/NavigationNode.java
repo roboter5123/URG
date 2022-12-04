@@ -68,6 +68,11 @@ public class NavigationNode implements Comparable {
 
     public boolean equals(Object o){
 
+        if (o == null){
+
+            return false;
+        }
+
         NavigationNode node = (NavigationNode) o;
 
         return this.x == node.x && this.y == node.y;

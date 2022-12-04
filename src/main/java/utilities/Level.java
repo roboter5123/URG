@@ -1,6 +1,6 @@
 package utilities;
 
-import entities.OponentType;
+import entities.OpponentType;
 import entities.Opponent;
 import entities.Player;
 import items.Item;
@@ -15,7 +15,7 @@ public class Level {
     private List<Opponent> opponentList;
     private Map map;
     private Random random;
-    final int ROOMSIZE = 7;
+    final int ROOM_SIZE = 7;
     private Camera camera;
     private Minimap minimap;
     private int playerRound = 0;
@@ -31,7 +31,7 @@ public class Level {
     public void init(int mapSize, int playerMaxHealth, int opponentCount) {
 
         random = new Random(1);
-        map = new Map(mapSize, ROOMSIZE, random);
+        map = new Map(mapSize, ROOM_SIZE, random);
         player = new Player(playerMaxHealth);
         map.placeEntity(player);
         camera = new Camera(this.player, map.getSpaces());
@@ -45,8 +45,8 @@ public class Level {
 
         for (int i = 0; i < opponentCount; i++) {
 
-            int typeNumber = random.nextInt(OponentType.values().length);
-            OponentType type = OponentType.values()[typeNumber];
+            int typeNumber = random.nextInt(OpponentType.values().length);
+            OpponentType type = OpponentType.values()[typeNumber];
             Opponent opponent = new Opponent(player, type);
 
             map.placeEntity(opponent);
@@ -86,10 +86,10 @@ public class Level {
 
             if (opponent.getHealth() == 0) {
 
-                int xpos = opponent.getxPos();
-                int ypos = opponent.getyPos();
+                int xPos = opponent.getxPos();
+                int yPos = opponent.getyPos();
                 Space[][] spaces = map.getSpaces();
-                Space curSpace = spaces[ypos][xpos];
+                Space curSpace = spaces[yPos][xPos];
 
                 curSpace.setEntityOnField(null);
                 Item drop = opponent.dropItem();

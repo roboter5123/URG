@@ -22,7 +22,7 @@ public class Room {
         permutations = Objects.requireNonNull(new File("rooms/" + roomType).list()).length;
     }
 
-    public void fillSpaces(Map map, int[] roomcoord, int rotation, Random random) throws FileNotFoundException {
+    public void fillSpaces(Map map, int[] roomCoord, int rotation, Random random) throws FileNotFoundException {
 
         Space[][] spaces = map.getSpaces();
         boolean[][] wallPositions = getWallPositions(rotation, random);
@@ -33,21 +33,21 @@ public class Room {
 
                 if (wallPositions[y][x]) {
 
-                    spaces[y + (roomcoord[0]*ROOM_SIZE)][x + (roomcoord[1]*ROOM_SIZE)].setEntityOnField(new Wall());
+                    spaces[y + (roomCoord[0]*ROOM_SIZE)][x + (roomCoord[1]*ROOM_SIZE)].setEntityOnField(new Wall());
                 }
             }
         }
     }
 
-    public boolean[][] rotate(boolean[][] wallpositions) {
+    public boolean[][] rotate(boolean[][] wallPositions) {
 
-        int M = wallpositions.length;
-        int N = wallpositions[0].length;
+        int M = wallPositions.length;
+        int N = wallPositions[0].length;
 
         boolean[][] ret = new boolean[N][M];
         for (int r = 0; r < M; r++) {
             for (int c = 0; c < N; c++) {
-                ret[c][M - 1 - r] = wallpositions[r][c];
+                ret[c][M - 1 - r] = wallPositions[r][c];
             }
         }
         return ret;

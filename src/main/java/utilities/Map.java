@@ -120,17 +120,17 @@ public class Map {
 
         while (notPlaced) {
 
-            int xpos = random.nextInt(mapSize * ROOM_SIZE - 1);
-            int ypos = random.nextInt(mapSize * ROOM_SIZE - 1);
+            int xPos = random.nextInt(mapSize * ROOM_SIZE - 1);
+            int yPos = random.nextInt(mapSize * ROOM_SIZE - 1);
 
-            if (spaces[ypos][xpos].getEntityOnField() == null) {
+            if (spaces[yPos][xPos].getEntityOnField() == null) {
 
                 notPlaced = false;
 
-                entity.setxPos(xpos);
-                entity.setyPos(ypos);
+                entity.setxPos(xPos);
+                entity.setyPos(yPos);
 
-                spaces[ypos][xpos].setEntityOnField(entity);
+                spaces[yPos][xPos].setEntityOnField(entity);
             }
         }
     }

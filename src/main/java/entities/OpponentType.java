@@ -1,6 +1,6 @@
 package entities;
 
-public enum OponentType {
+public enum OpponentType {
 
     ORC,
 }

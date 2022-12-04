@@ -26,11 +26,6 @@ public class Player extends Entity implements Interactable {
         }
     }
 
-    public int getReach() {
-
-        return reach;
-    }
-
     @Override
     public void interact(Entity entity, Map map) {
 

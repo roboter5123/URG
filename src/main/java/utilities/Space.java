@@ -5,7 +5,7 @@ import items.Item;
 
 public class Space {
 
-    private Entity characterOnField;
+    private Entity entityOnField;
     private Item itemOnField;
     private int xPos;
     private int yPos;
@@ -13,12 +13,12 @@ public class Space {
     public Space() {}
 
     public Entity getEntityOnField() {
-        return characterOnField;
+        return entityOnField;
     }
 
-    public void setEntityOnField(Entity characteronField) {
+    public void setEntityOnField(Entity entityOnField) {
 
-        this.characterOnField = characteronField;
+        this.entityOnField = entityOnField;
     }
 
     public Item getItemOnField() {
@@ -52,7 +52,7 @@ public class Space {
     @Override
     public String toString() {
         return "Utilities.Space{" +
-                "characteronField=" + characterOnField +
+                "entityOnField=" + entityOnField +
                 '}';
     }
 }

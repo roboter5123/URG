@@ -9,16 +9,16 @@ import java.util.List;
 
 public class Minimap {
 
-    int ROOMSIZE = 7;
-    int boardsize;
+    private final int ROOM_SIZE = 7;
+    int boardSize;
     boolean[][] opponents;
     boolean[][] player;
 
     public Minimap(Map map) {
         Space[][] spaces = map.getSpaces();
-        this.boardsize = map.mapSize * ROOMSIZE;
-        this.opponents = new boolean[boardsize/ROOMSIZE][boardsize/ROOMSIZE];
-        this.player = new boolean[boardsize/ROOMSIZE][boardsize/ROOMSIZE];
+        this.boardSize = map.mapSize * ROOM_SIZE;
+        this.opponents = new boolean[boardSize / ROOM_SIZE][boardSize / ROOM_SIZE];
+        this.player = new boolean[boardSize / ROOM_SIZE][boardSize / ROOM_SIZE];
         findMaps(spaces);
     }
 
@@ -65,16 +65,16 @@ public class Minimap {
 
         for (Entity opponent : opponents) {
 
-            int x = opponent.getxPos() / ROOMSIZE;
-            int y = opponent.getyPos() / ROOMSIZE;
+            int x = opponent.getxPos() / ROOM_SIZE;
+            int y = opponent.getyPos() / ROOM_SIZE;
 
             this.opponents[y][x] = true;
         }
 
         if (player != null){
 
-            int x = player.getxPos() / ROOMSIZE;
-            int y = player.getyPos()/ ROOMSIZE;
+            int x = player.getxPos() / ROOM_SIZE;
+            int y = player.getyPos()/ ROOM_SIZE;
             this.player[y][x] = true;
         }
 
@@ -85,7 +85,7 @@ public class Minimap {
 
         StringBuilder minimap = new StringBuilder();
 
-        minimap.append("=".repeat(2* (boardsize/ROOMSIZE)+1));
+        minimap.append("=".repeat(2* (boardSize / ROOM_SIZE)+1));
         minimap.append("\n");
 
         for (int i = 0; i < opponents.length; i++) {
@@ -109,7 +109,7 @@ public class Minimap {
 
         }
 
-        minimap.append("=".repeat(2 * (boardsize/ROOMSIZE)+1));
+        minimap.append("=".repeat(2 * (boardSize / ROOM_SIZE)+1));
 
         return minimap.toString();
     }

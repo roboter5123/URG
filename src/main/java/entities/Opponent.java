@@ -15,9 +15,9 @@ public class Opponent extends Entity implements Interactable {
 
     private List <Item> lootTable;
 
-    public Opponent(Player player, OponentType type) {
+    public Opponent(Player player, OpponentType type) {
 
-        if (type == OponentType.ORC) {
+        if (type == OpponentType.ORC) {
 
             this.ai = new Orc(player, this);
             this.setImage(new Image("entities/Orc.png"));
