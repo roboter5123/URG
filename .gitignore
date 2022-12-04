@@ -103,3 +103,4 @@ replay_pid*
 .idea/workspace-DESKTOP-8K1GFNT.xml
 
 .idea/codeStyles/
+/src/main/resources/entities/Wall.psd
