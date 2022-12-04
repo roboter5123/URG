@@ -17,6 +17,9 @@ public class Camera {
         updateViewPort(spaces);
     }
 
+    /**
+     * @param spaces Used to update the viewport so that the viewport consists of an array of Spaces, which is viewPortSize in Size, that's centered around the target entity, usually the player.
+     */
     public void updateViewPort(Space[][] spaces) {
 
         int targetXPos = target.getxPos();
@@ -52,7 +55,11 @@ public class Camera {
         }
     }
 
-    public Space[][] getMap(Space[][] spaces){
+    /**
+     * @param spaces Used to update the viewport so that the viewport consists of an array of Spaces, which is viewPortSize in Size, that's centered around the target entity, usually the player.
+     * @return The updated viewport.
+     */
+    public Space[][] getViewPort(Space[][] spaces){
 
         updateViewPort(spaces);
 

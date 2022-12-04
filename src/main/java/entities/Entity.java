@@ -8,18 +8,23 @@ public class Entity {
 
     private int xPos;
     private int yPos;
-    private int maxHealth = 10;
+    private int maxHealth;
     private int health;
     private int dmg;
-
     int reach;
     private String sprite;
-
     private Image image;
 
     public Entity() {
 
     }
+
+    /**
+     * Moves this entity in the direction chosen.
+     * @param moves The amount of spaces to move in the direction. Positive integers only.
+     * @param direction The direction to move the entity in. Made up of the axis and the direction on that axis seperated by a space. Example: "+ X"
+     * @param map The map on which to move this entity
+     */
     public void move(int moves, char direction, Map map) {
 
         Space[][] spaces = map.getSpaces();
@@ -34,12 +39,10 @@ public class Entity {
 
             newXPos = xPos + moves;
             newSpace = spaces[newYPos][newXPos];
-
         } else if (direction == 'y' && yPos + moves != spaces.length && yPos + moves >= 0) {
 
             newYPos = yPos + moves;
             newSpace = spaces[newYPos][newXPos];
-
         }
 
         entity = newSpace.getEntityOnField();
@@ -63,12 +66,38 @@ public class Entity {
         this.yPos = newYPos;
         curSpace.setEntityOnField(null);
         newSpace.setEntityOnField(this);
-
     }
 
-    public void looseHealth(int dmg) {
+    /**
+     * Makes this entity loose health equal to dmg.
+     * @param dmg The amount of health the entity should lose.
+     */
+    public void loseHealth(int dmg) {
 
         health -= dmg;
+    }
+
+    /**
+     * Increases This entities health by heal up to the amount maxHealth is set.
+     * @param heal The amount of health the entity should gain.
+     * @return Is true when the item was used. False when it was not.
+     */
+    public boolean heal(int heal) {
+
+        if (this.health == this.maxHealth) {
+
+            return false;
+        }
+
+        if (this.health + heal > this.maxHealth) {
+
+            this.health = this.maxHealth;
+        } else {
+
+            this.health += heal;
+        }
+
+        return true;
     }
 
     public int getDmg() {
@@ -131,15 +160,6 @@ public class Entity {
         this.dmg = dmg;
     }
 
-    @Override
-    public String toString() {
-
-        return this.getClass() + "{" +
-                "xPos=" + xPos +
-                ", yPos=" + yPos +
-                '}';
-    }
-
     public Image getImage() {
 
         return image;
@@ -150,22 +170,12 @@ public class Entity {
         this.image = image;
     }
 
-    public boolean heal(int heal) {
+    @Override
+    public String toString() {
 
-        if (this.health == this.maxHealth){
-
-            return false;
-        }
-
-        if (this.health + heal > this.maxHealth){
-
-            this.health = this.maxHealth;
-
-        }else {
-
-            this.health += heal;
-        }
-
-        return true;
+        return this.getClass() + "{" +
+                "xPos=" + xPos +
+                ", yPos=" + yPos +
+                '}';
     }
 }

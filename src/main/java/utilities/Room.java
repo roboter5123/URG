@@ -10,9 +10,24 @@ import java.util.Scanner;
 
 public class Room {
 
+    /**
+     * Dictates the Size of a room
+     */
     public static final int ROOM_SIZE = 7;
+
+    /**
+     * A binary array that dictates the positions of walls in the room.
+     */
     private boolean[][] wallPositions;
+
+    /**
+     * Sets the type of room. eg.: Corner,Edge,Middle.
+     */
     String roomType;
+
+    /**
+     * The number of WallPosition files
+     */
     private static int permutations;
 
     public Room(String roomType) {
@@ -22,6 +37,13 @@ public class Room {
         permutations = Objects.requireNonNull(new File("rooms/" + roomType).list()).length;
     }
 
+    /**
+     * @param map The map whose Spaces should be filled with walls.
+     * @param roomCoord The coordinates the room is located at. These coordinates should be in the range of 0 to mapSize.
+     * @param rotation The amount of times the WallPositions should be rotated by 90° counter Clock wise.
+     * @param random Used to determine a random WallPositions file.
+     * @throws FileNotFoundException If the randomly decided WallPositionsfile doesn't exist.
+     */
     public void fillSpaces(Map map, int[] roomCoord, int rotation, Random random) throws FileNotFoundException {
 
         Space[][] spaces = map.getSpaces();
@@ -39,6 +61,10 @@ public class Room {
         }
     }
 
+    /**
+     * @param wallPositions A binary array that dictates the positions of walls in the room.
+     * @return Rotated wallPositions by 90° counter clock wise.
+     */
     public boolean[][] rotate(boolean[][] wallPositions) {
 
         int M = wallPositions.length;
@@ -53,6 +79,12 @@ public class Room {
         return ret;
     }
 
+    /**
+     * @param rotation The amount of times the WallPositions should be rotated by 90° counter Clock wise.
+     * @param random Used to determine a random WallPositions file.
+     * @return A binary array that dictates the positions of walls in the room.
+     * @throws FileNotFoundException If the randomly decided WallPositionsfile doesn't exist.
+     */
     public boolean[][] getWallPositions(int rotation, Random random) throws FileNotFoundException {
 
         wallPositions = new boolean[ROOM_SIZE][ROOM_SIZE];

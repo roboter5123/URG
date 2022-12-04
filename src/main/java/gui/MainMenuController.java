@@ -12,11 +12,19 @@ import java.util.Objects;
 
 public class MainMenuController {
 
+    /**
+     * Ends the program.
+     */
     public void quitGame() {
 
         System.exit(0);
     }
 
+    /**
+     * Unloads the main menu screen and load the level select screen.
+     * @param event The event that triggered this method. Usually the start game button on the main screen.
+     * @throws IOException
+     */
     public void play(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LevelSelectMenu.fxml")));

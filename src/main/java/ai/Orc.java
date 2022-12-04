@@ -26,6 +26,12 @@ public class Orc implements AI {
         this.setLootTable();
     }
 
+    /**
+     * Uses A* to find the best direction to move in.
+     * @param map    The map on which the opponent should move.
+     * @param random used to randomify movement.
+     * @return A string representing the axis to move on and the direction on that axis.Seperated by a single space. Example: + x
+     */
     public String calculateMovementDirection(Map map, Random random) {
 
         int xSteps = opponent.getxPos() - player.getxPos();
@@ -45,6 +51,12 @@ public class Orc implements AI {
         }
     }
 
+    /**
+     * Chooses a random direction to walk in. Used when the player is out of sight.
+     * @param map The map on which the opponent should move.
+     * @param random Used to randomify movement.
+     * @return A string representing the axis to move on and the direction on that axis. Seperated by a single space. Example: "+ x"
+     */
     private String randomDirection(Map map, Random random) {
 
         List<String> directions = new ArrayList<>();
@@ -111,6 +123,15 @@ public class Orc implements AI {
         return directions.get(randomIndex);
     }
 
+    /**
+     * solves A* for this opponent.
+     * @param startNode The node on which the Opponent is located currently.
+     * @param endNode The node the opponents target is located on. usually the player.
+     * @param map The map on which the opponent should move.
+     * TODO: I don't know why anymore this is used here anymore. Should try and remember that soon.
+     * @param random Used to randomify movement.
+     * @return A string representing the axis to move on and the direction on that axis. Seperated by a single space. Example: "+ x"
+     */
     private String solveAStar(NavigationNode startNode, NavigationNode endNode, Map map, Random random) {
 
         NavigationNode curNode = startNode;
@@ -190,6 +211,12 @@ public class Orc implements AI {
         }
     }
 
+    /**
+     * Used to calculate the airline between two codes.
+     * @param node1 The first node.
+     * @param node2 The second node.
+     * @return The distance between the two nodes.
+     */
     private double calculateDistance(NavigationNode node1, NavigationNode node2) {
 
         int a = node1.x - node2.x;
@@ -197,6 +224,10 @@ public class Orc implements AI {
         return Math.sqrt((a * a) + (b * b));
     }
 
+    /**
+     * @param nodes  A list of all nodes.
+     * @return The node on which the opponent is located.
+     */
     private NavigationNode getStartNode(NavigationNode[][] nodes) {
 
         for (NavigationNode[] row : nodes) {
@@ -212,6 +243,10 @@ public class Orc implements AI {
         return null;
     }
 
+    /**
+     * @param nodes  A list of all nodes.
+     * @return The node on which the opponents target is located. usually the player.
+     */
     private NavigationNode getEndNode(NavigationNode[][] nodes) {
 
         for (NavigationNode[] row : nodes) {
@@ -227,6 +262,10 @@ public class Orc implements AI {
         return null;
     }
 
+    /**
+     * Sets all the neighbors of the nodes correctly.
+     * @param nodes A list of all nodes.
+     */
     private void connectNodes(NavigationNode[][] nodes) {
 
         for (int y = 0; y < nodes.length; y++) {
@@ -262,6 +301,11 @@ public class Orc implements AI {
         }
     }
 
+    /**
+     * Generates the nodes for the whole map.
+     * @param spaces The Spaces for which to generate the nodes.
+     * @return An array of navigation nodes.
+     */
     private NavigationNode[][] generateNodes(Space[][] spaces) {
 
         NavigationNode[][] nodes = new NavigationNode[spaces.length][spaces[0].length];
@@ -310,6 +354,9 @@ public class Orc implements AI {
         return this.lootTable;
     }
 
+    /**
+     * Sets the loottable for this type of opponent.
+     */
     private void setLootTable() {
         this.lootTable = new ArrayList<>();
         this.lootTable.add(new HealItem(1));
