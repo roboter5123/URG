@@ -1,45 +1,24 @@
-import utilities.Level;
-import java.util.Scanner;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
+import java.io.IOException;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("gui/MainMenu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Urg");
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public static void main(String[] args) {
 
-        play();
-    }
-
-    public static void play(){
-
-        Level level = init();
-        level.gameLoop();
-    }
-
-    public static Level init() {
-
-        Scanner sc = new Scanner(System.in);
-        int mapSize = 1;
-
-        boolean validInput = false;
-        do {
-            System.out.println("How big should the map be? recommended: 3");
-
-            try {
-
-                mapSize = Integer.parseInt(sc.nextLine());
-
-                if (mapSize > 0) {
-
-                    validInput = true;
-                }
-            } catch (NumberFormatException ignored) {
-            }
-
-            if (!validInput) {
-
-                System.out.println("Please enter a valid number larger than 0.");
-            }
-        } while (!validInput);
-
-        return new Level(mapSize, mapSize * 2 + 1, mapSize * 2);
+        launch(args);
     }
 }

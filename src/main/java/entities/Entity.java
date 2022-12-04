@@ -12,11 +12,6 @@ public class Entity {
     private int health;
     private int dmg;
 
-    public int getDmg() {
-
-        return dmg;
-    }
-
     int reach;
     private String sprite;
 
@@ -25,7 +20,6 @@ public class Entity {
     public Entity() {
 
     }
-
     public void move(int moves, char direction, Map map) {
 
         Space[][] spaces = map.getSpaces();
@@ -123,6 +117,11 @@ public class Entity {
     public void looseHealth(int dmg) {
 
         health -= dmg;
+    }
+
+    public int getDmg() {
+
+        return dmg;
     }
 
     public int getxPos() {

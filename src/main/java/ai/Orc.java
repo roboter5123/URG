@@ -1,5 +1,7 @@
 package ai;
 
+import items.HealItem;
+import items.Item;
 import utilities.Map;
 import utilities.Space;
 import entities.Opponent;
@@ -12,12 +14,16 @@ public class Orc implements AI {
     private final Player player;
     private final Opponent opponent;
     private final int reach = 1;
-    private final int sightRadius = 4;
+    private final int SIGHT_RADIUS = 4;
+    private final int MAX_HEALTH = 5;
+    private final int DMG = 1;
+    private List<Item> lootTable;
 
     public Orc(Player player, Opponent opponent) {
 
         this.player = player;
         this.opponent = opponent;
+        this.setLootTable();
     }
 
     public String calculateMovementDirection(Map map, Random random) {
@@ -25,7 +31,7 @@ public class Orc implements AI {
         int xSteps = opponent.getxPos() - player.getxPos();
         int ySteps = opponent.getyPos() - player.getyPos();
 
-        if (xSteps <= sightRadius && xSteps >= (sightRadius * -1) && ySteps <= sightRadius && ySteps >= (sightRadius * -1)) {
+        if (xSteps <= SIGHT_RADIUS && xSteps >= (SIGHT_RADIUS * -1) && ySteps <= SIGHT_RADIUS && ySteps >= (SIGHT_RADIUS * -1)) {
 
             Space[][] spaces = map.getSpaces();
             NavigationNode[][] nodes = generateNodes(spaces);
@@ -282,20 +288,33 @@ public class Orc implements AI {
         return nodes;
     }
 
-    public int getMaxHealth() {
+    public int getMAX_HEALTH() {
 
-        int maxHealth = 5;
-        return maxHealth;
+
+        return MAX_HEALTH;
     }
 
-    public int getDmg() {
+    public int getDMG() {
 
-        int dmg = 1;
-        return dmg;
+        return DMG;
     }
 
     public int getReach() {
 
         return reach;
+    }
+
+    @Override
+    public List<Item> getLootTable() {
+
+        return this.lootTable;
+    }
+
+    private void setLootTable() {
+        this.lootTable = new ArrayList<>();
+        this.lootTable.add(new HealItem(1));
+        this.lootTable.add(new HealItem(2));
+        this.lootTable.add(null);
+
     }
 }

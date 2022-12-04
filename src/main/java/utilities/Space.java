@@ -1,12 +1,12 @@
 package utilities;
 
 import entities.Entity;
-import entities.Interactable;
+import items.Item;
 
 public class Space {
 
     private Entity characterOnField;
-    private Interactable itemOnField;
+    private Item itemOnField;
     private int xPos;
     private int yPos;
 
@@ -21,12 +21,12 @@ public class Space {
         this.characterOnField = characteronField;
     }
 
-    public Interactable getItemOnField() {
+    public Item getItemOnField() {
 
         return itemOnField;
     }
 
-    public void setItemOnField(Interactable itemOnField) {
+    public void setItemOnField(Item itemOnField) {
 
         this.itemOnField = itemOnField;
     }

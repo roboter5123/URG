@@ -1,8 +1,8 @@
 package gui;
 
 import entities.Entity;
-import entities.Interactable;
 import entities.Wall;
+import items.Item;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -96,7 +96,7 @@ public class GameController implements Initializable {
             for (int x = 0; x < view[y].length; x++) {
 
                 Entity entity = view[y][x].getEntityOnField();
-                Interactable item = view[y][x].getItemOnField();
+                Item item = view[y][x].getItemOnField();
 
                 if ((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0) {
 
@@ -109,7 +109,7 @@ public class GameController implements Initializable {
 
                 if (item != null){
 
-                    new Sprite(x * cellWidth, y * cellHeight , cellHeight * 0.5 , cellWidth * 0.5, item.getImage()).draw(gameGC);
+                    new Sprite(x * cellWidth + (cellWidth * 0.25), y * cellHeight , cellHeight * 0.5 , cellWidth * 0.5, item.getImage()).draw(gameGC);
                 }
 
                 if (entity!= null) {
@@ -138,7 +138,7 @@ public class GameController implements Initializable {
         int playerHealth = level.getPlayer().getHealth();
         double lastHeartX = 0;
         int counter = 0;
-        Sprite fullHeart = new Sprite(0, 0, cellHeight, cellWidth, new Image("uielements/FullHeart.png"));
+        Sprite fullHeart = new Sprite(0, 0, cellHeight, cellWidth, new Image("uielements/heart2.png"));
 
         for (int i = 0; i < playerHealth; i += 2) {
 
@@ -150,7 +150,7 @@ public class GameController implements Initializable {
 
         if (playerHealth % 2 != 0) {
 
-            new Sprite(lastHeartX, 0, cellHeight, cellWidth, new Image("uielements/HalfHeart.png")).draw(UIGC);
+            new Sprite(lastHeartX, 0, cellHeight, cellWidth, new Image("uielements/heart1.png")).draw(UIGC);
         }
     }
 

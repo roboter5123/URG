@@ -3,7 +3,7 @@ package utilities;
 import entities.OponentType;
 import entities.Opponent;
 import entities.Player;
-import items.HealItem;
+import items.Item;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
@@ -54,26 +54,6 @@ public class Level {
         }
     }
 
-    public void gameLoop() {
-
-        while (!gameOver && isPlayerAlive) {
-
-            for (int i = 0; i < player.getReach(); i++) {
-
-                minimap.updateMinimap(map);
-                System.out.println(minimap.toString());
-                System.out.println(camera.getMapString(map.getSpaces()));
-                System.out.println(player.getHealth());
-//                player.move(map);
-                checkOpponentHealth();
-            }
-
-            moveOpponents();
-
-            isGameOver();
-        }
-    }
-
     public void isGameOver() {
 
         if (player.getHealth() <= 0) {
@@ -109,9 +89,11 @@ public class Level {
                 int xpos = opponent.getxPos();
                 int ypos = opponent.getyPos();
                 Space[][] spaces = map.getSpaces();
+                Space curSpace = spaces[ypos][xpos];
 
-                spaces[ypos][xpos].setEntityOnField(null);
-                spaces[ypos][xpos].setItemOnField(new HealItem(ypos,xpos));
+                curSpace.setEntityOnField(null);
+                Item drop = opponent.dropItem();
+                curSpace.setItemOnField(drop);
                 opponentList.remove(opponent);
             }
         }
