@@ -158,13 +158,14 @@ public class Level {
             moveOpponents();
         }
 
+
         isGameOver();
 
         if (gameOver && isPlayerAlive){
 
             return StatusCode.PLAYER_WON;
 
-        } else if (gameOver && !isPlayerAlive) {
+        } else if (gameOver) {
 
             return StatusCode.PLAYER_LOST;
 

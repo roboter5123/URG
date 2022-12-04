@@ -126,9 +126,12 @@ public class GameController implements Initializable {
         int playerHealth = level.getPlayer().getHealth();
         double lastHeartX = 0;
         int counter = 0;
+        Sprite fullHeart = new Sprite(0,0,cellHeight,cellWidth,new Image("uielements/FullHeart.png"));
+
         for (int i = 0; i < playerHealth; i += 2) {
 
-            new Sprite(cellWidth * counter, 0, cellHeight, cellWidth, new Image("uielements/FullHeart.png")).draw(UIGC);
+            fullHeart.setX(cellWidth * counter);
+            fullHeart.draw(UIGC);
             lastHeartX = counter * cellWidth;
             counter++;
         }
@@ -142,20 +145,29 @@ public class GameController implements Initializable {
     public void drawScreen() {
 
         Space[][] view = level.getCamera().getMap(level.getMap().getSpaces());
+        long startTime = System.currentTimeMillis();
         scaleCanvases();
+        long endTime = System.currentTimeMillis();
+        System.out.println("Canvas scaling took " + (endTime - startTime) + " ms");
+        startTime = endTime;
         drawGameAndBG(view);
+        endTime = System.currentTimeMillis();
+        System.out.println("Background and game drawing took " + (endTime - startTime) + " ms");
+        startTime = endTime;
         drawUI(view);
+        endTime = System.currentTimeMillis();
+        System.out.println("UI drawing took " + (endTime - startTime) + " ms");
     }
 
     public void move(KeyCode code) throws InterruptedException {
+
+        System.out.println("=".repeat(50));
         long startTime = System.currentTimeMillis();
         StatusCode statuscode = level.play(code);
         long endTime = System.currentTimeMillis();
-        System.out.println("level calculaion took " + (endTime - startTime) + " ms");
-        startTime = endTime;
+        System.out.println("level calculation took " + (endTime - startTime) + " ms");
         drawScreen();
-        endTime = System.currentTimeMillis();
-        System.out.println("sdrawing took " + (endTime - startTime) + " msd");
+
          if (statuscode == StatusCode.PLAYER_WON){
 
              System.exit(0);
