@@ -19,12 +19,18 @@ public class LevelSelectMenu {
     Scene scene;
     Parent root;
 
+    /**
+     * Unloads the level select screen and load the main menu screen back.
+     * @param event The event that triggered this method. usually the back button on the level select screen.
+     */
     public void backToMainMenu(ActionEvent event) {
 
-
         try {
+
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainMenu.fxml")));
+
         } catch (IOException e) {
+
             throw new RuntimeException(e);
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -33,6 +39,11 @@ public class LevelSelectMenu {
         stage.show();
     }
 
+    /**
+     * Starts the game.
+     * @param event The event that triggered this method. Usually one of the buttons on the level select screen.
+     * @throws IOException
+     */
     public void startGame(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("game.fxml"));

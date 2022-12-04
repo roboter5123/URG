@@ -12,6 +12,12 @@ public class Map {
     final int ROOM_SIZE;
     Random random;
 
+    /**
+     * Generates a Map with a space array in size (mapSize * ROOM_SIZE)²
+     * @param mapSize The size of the spaces in amount of rooms per side. So that an array of all rooms would be of mapSize² size.
+     * @param ROOM_SIZE The size of a single room.
+     * @param random Used to determine a random WallPositions file.
+     */
     public Map(int mapSize, int ROOM_SIZE, Random random) {
 
         this.ROOM_SIZE = ROOM_SIZE;
@@ -31,89 +37,114 @@ public class Map {
         setWalls(random);
     }
 
+    /**
+     * Sets all the walls on the map.
+     * @param random Used to determine a random WallPositions file.
+     */
     private void setWalls(Random random) {
 
-        for (int k = 0; k < mapSize ; k++) {
+        for (int yPos = 0; yPos < mapSize; yPos++) {
 
-            for (int l = 0; l < mapSize; l ++) {
+            for (int xPos = 0; xPos < mapSize; xPos++) {
 
-                if ((k == 0 && l == 0) || (k == mapSize - 1 && l == 0) || (k == 0 && l == mapSize - 1) ||(k == mapSize - 1 && l == mapSize - 1)) {
+                if ((yPos == 0 && xPos == 0) || (yPos == mapSize - 1 && xPos == 0) || (yPos == 0 && xPos == mapSize - 1) || (yPos == mapSize - 1 && xPos == mapSize - 1)) {
 
-                    fillCornerRoom(k, l, random);
+                    fillCornerRoom(yPos, xPos, random);
 
-                } else if (l == 0 || k == 0 || k == mapSize -1 || l == mapSize - 1) {
+                } else if (xPos == 0 || yPos == 0 || yPos == mapSize - 1 || xPos == mapSize - 1) {
 
-                    fillEdgeRoom(k, l, random);
+                    fillEdgeRoom(yPos, xPos, random);
                 } else {
 
-                    try {
-
-                        Room room = new Room("CenterRoom");
-                        room.fillSpaces(this, new int[]{k, l}, 0, random);
-                    } catch (FileNotFoundException e) {
-
-                        throw new RuntimeException(e);
-                    }
+                    fillCenterRoom(yPos, xPos, random);
                 }
             }
         }
     }
 
-    private void fillCornerRoom(int k, int l, Random random) {
-
-        Room room = new Room("CornerRoom");
-        int rotation = 0;
-
-        if (k == 0 && l == mapSize - 1) {
-
-            rotation = 1;
-        } else if (k == mapSize - 1 && l == mapSize - 1) {
-
-            rotation = 2;
-        } else if (k == mapSize - 1 && l == 0) {
-
-            rotation = 3;
-        }
+    /**
+     * Fills a room with type CenterRoom with walls
+     * @param yPos Y Position of the room. Should be in the format of 0 to mapSize.
+     * @param xPos X Position of the room. Should be in the format of 0 to mapSize.
+     * @param random Used to determine a random WallPositions file.
+     */
+    private void fillCenterRoom(int yPos, int xPos, Random random) {
 
         try {
 
-            room.fillSpaces(this, new int[]{k, l}, rotation, random);
-        } catch (FileNotFoundException e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    private void fillEdgeRoom(int k, int l, Random random) {
-
-        Room room = new Room("EdgeRoom");
-        int rotation = 0;
-
-        if (k == 0) {
-
-            rotation = 1;
-        } else if (l == mapSize - 1) {
-
-            rotation = 2;
-        } else if (k == mapSize - 1) {
-
-            rotation = 3;
-        }
-
-        try {
-
-            room.fillSpaces(this, new int[]{k, l}, rotation, random);
+            Room room = new Room("CenterRoom");
+            room.fillSpaces(this, new int[]{yPos, xPos}, 0, random);
         } catch (FileNotFoundException e) {
 
             throw new RuntimeException(e);
         }
     }
 
-    public Space[][] getSpaces() {
+    /**
+     * Fills a room with type CornerRoom with walls.
+     * @param yPos Y Position of the room. Should be in the format of 0 to mapSize.
+     * @param xPos X Position of the room. Should be in the format of 0 to mapSize.
+     * @param random Used to determine a random WallPositions file.
+     */
+    private void fillCornerRoom(int yPos, int xPos, Random random) {
 
-        return spaces;
+        Room room = new Room("CornerRoom");
+        int rotation = 0;
+
+        if (yPos == 0 && xPos == mapSize - 1) {
+
+            rotation = 1;
+        } else if (yPos == mapSize - 1 && xPos == mapSize - 1) {
+
+            rotation = 2;
+        } else if (yPos == mapSize - 1 && xPos == 0) {
+
+            rotation = 3;
+        }
+
+        try {
+
+            room.fillSpaces(this, new int[]{yPos, xPos}, rotation, random);
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Fills a room with type EdgeRoom with walls.
+     * @param yPos Y Position of the room. Should be in the format of 0 to mapSize.
+     * @param xPos X Position of the room. Should be in the format of 0 to mapSize.
+     * @param random Used to determine a random WallPositions file.
+     */
+    private void fillEdgeRoom(int yPos, int xPos, Random random) {
+
+        Room room = new Room("EdgeRoom");
+        int rotation = 0;
+
+        if (yPos == 0) {
+
+            rotation = 1;
+        } else if (xPos == mapSize - 1) {
+
+            rotation = 2;
+        } else if (yPos == mapSize - 1) {
+
+            rotation = 3;
+        }
+
+        try {
+
+            room.fillSpaces(this, new int[]{yPos, xPos}, rotation, random);
+        } catch (FileNotFoundException e) {
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @param entity Entity to be placed on the space array.
+     */
     public void placeEntity(Entity entity) {
 
         boolean notPlaced = true;
@@ -135,8 +166,15 @@ public class Map {
         }
     }
 
+
+    public Space[][] getSpaces() {
+
+        return spaces;
+    }
+
     @Override
     public String toString() {
+
         Space[][] spaces1 = spaces;
 
         StringBuilder map = new StringBuilder();

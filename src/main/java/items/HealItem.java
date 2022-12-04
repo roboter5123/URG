@@ -15,6 +15,11 @@ public class HealItem extends Item {
         this.image = new Image("uielements/heart"+heal+".png");
     }
 
+    /**
+     * Heals the target entity by this items heal amount.
+     * @param entity The entity that interacts with this object.
+     * @param map    The map on which the interaction happens.
+     */
     @Override
     public void interact(Entity entity, Map map) {
 
@@ -27,6 +32,10 @@ public class HealItem extends Item {
         }
     }
 
+    /**
+     * Deletes the item of the map.
+     * @param map The map on which the Item is located.
+     */
     public void selfDestruction(Map map){
 
         map.getSpaces()[yPos][xPos].setItemOnField(null);

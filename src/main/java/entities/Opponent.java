@@ -32,6 +32,11 @@ public class Opponent extends Entity implements Interactable {
         this.setReach(ai.getReach());
     }
 
+    /**
+     * Moves the opponent in the direction their AI tells them to move.
+     * @param map The map on which the entity should move.
+     * @param random used to determin the movement direction in case of the player being out of sight.
+     */
     public void move(Map map, Random random) {
 
         String move = this.ai.calculateMovementDirection(map, random);
@@ -44,6 +49,9 @@ public class Opponent extends Entity implements Interactable {
         super.move(Integer.parseInt(move.split(" ")[0] + 1) * ai.getReach(), move.charAt(2), map);
     }
 
+    /**
+     * @return The item this opponent drops. Picked randomly from their AIs lootTable. Already set on a field.
+     */
     public Item dropItem(){
 
         Item drop;
@@ -62,6 +70,17 @@ public class Opponent extends Entity implements Interactable {
         return drop;
     }
 
+    /**
+     * This entity takes damage when interacted with.
+     * @param entity The entity that interacts with this object.
+     * @param map    The map on which the interaction happens.
+     */
+    @Override
+    public void interact(Entity entity, Map map) {
+
+        this.loseHealth(entity.getDmg());
+    }
+
     public int getReach() {
 
         return reach;
@@ -72,9 +91,6 @@ public class Opponent extends Entity implements Interactable {
         this.reach = reach;
     }
 
-    @Override
-    public void interact(Entity entity, Map map) {
 
-        this.looseHealth(entity.getDmg());
-    }
+
 }

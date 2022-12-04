@@ -16,6 +16,11 @@ public class Player extends Entity implements Interactable {
         this.setImage(new Image("entities/Player.png"));
     }
 
+    /**
+     * Moves the player in the direction they chose.
+     * @param map The map on which the player should move.
+     * @param input Can be WASD and is used to pick the direction to move the player in.
+     */
     public void move(Map map, String input){
 
         switch (input) {
@@ -26,12 +31,17 @@ public class Player extends Entity implements Interactable {
         }
     }
 
+    /**
+     * If the interacting entity is an opponent the player looses health determined by the opponents dmg value.
+     * @param entity The entity that interacts with this object.
+     * @param map    The map on which the interaction happens.
+     */
     @Override
     public void interact(Entity entity, Map map) {
 
         if (entity instanceof Opponent){
 
-            this.looseHealth(entity.getDmg());
+            this.loseHealth(entity.getDmg());
         }
     }
 }

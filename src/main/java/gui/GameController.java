@@ -27,6 +27,11 @@ public class GameController implements Initializable {
     int playerMaxHealth;
     int opponentCount;
 
+    /**
+     * Only called during creation of this controller. Should not be used outside of creation.
+     * @param url Not used
+     * @param resourceBundle Not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -43,6 +48,10 @@ public class GameController implements Initializable {
         });
     }
 
+    /**
+     * Called when the game starts. Creates a level object with the appropriate values.
+     * @param text The text of the button that was pressed to start the game. used to set the mapSize, playerMaxHealth and opponentCount.
+     */
     public void startGame(String text) {
 
         if ("Small".equals(text)) {
@@ -65,6 +74,9 @@ public class GameController implements Initializable {
         drawScreen();
     }
 
+    /**
+     * Scales the 3 canvases (backgroundLayer, gameLayer and UILayer) to the whole window.
+     */
     public void scaleCanvases() {
 
         double windowHeight = root.getHeight();
@@ -77,6 +89,10 @@ public class GameController implements Initializable {
         UILayer.setWidth(windowWidth);
     }
 
+    /**
+     * Draws the view of the map. Including background tiles and foreground entities / items
+     * @param view The viewPort from the camera centered around a target entity, usually the player.
+     */
     public void drawGameAndBG(Space[][] view) {
 
         double layerWidth = gameLayer.getWidth();
@@ -127,6 +143,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Draws the UI onto the UILayer Canvas.
+     * @param view The viewPort from the camera centered around a target entity, usually the player.
+     */
     private void drawUI(Space[][] view) {
 
         double layerWidth = UILayer.getWidth();
@@ -154,9 +174,12 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Draws the whole screen. Including backgroundLayer, gameLayer and UILayer.
+     */
     public void drawScreen() {
 
-        Space[][] view = level.getCamera().getMap(level.getMap().getSpaces());
+        Space[][] view = level.getCamera().getViewPort(level.getMap().getSpaces());
         long startTime = System.currentTimeMillis();
         scaleCanvases();
         long endTime = System.currentTimeMillis();
@@ -171,6 +194,11 @@ public class GameController implements Initializable {
         System.out.println("UI drawing took " + (endTime - startTime) + " ms");
     }
 
+    /**
+     * Main Method of the game. Plays one cycle of the game loop.
+     * @param code The keycode of the key the player clicked. Used for determining the action the player wants to take.
+     * @throws InterruptedException
+     */
     public void move(KeyCode code) throws InterruptedException {
 
         System.out.println("=".repeat(50));

@@ -6,8 +6,11 @@ import items.Item;
 public class Space {
 
     private Entity entityOnField;
+
     private Item itemOnField;
+
     private int xPos;
+
     private int yPos;
 
     public Space() {}

@@ -15,21 +15,20 @@ public class Minimap {
     boolean[][] player;
 
     public Minimap(Map map) {
-        Space[][] spaces = map.getSpaces();
+
         this.boardSize = map.mapSize * ROOM_SIZE;
         this.opponents = new boolean[boardSize / ROOM_SIZE][boardSize / ROOM_SIZE];
         this.player = new boolean[boardSize / ROOM_SIZE][boardSize / ROOM_SIZE];
-        findMaps(spaces);
+        updateMinimap(map);
     }
 
-    public void updateMinimap(Map map){
+    /**
+     * Looks through the whole map to which room contains what kind of non Wall entity. And sets the corresponding values in the corresponding bool arrays for the type of entity in this minimap.
+     * @param map The map that this minimap should represent / look through.
+     */
+    public void updateMinimap(Map map) {
 
         Space[][] spaces = map.getSpaces();
-        findMaps(spaces);
-    }
-
-    public void findMaps(Space[][] spaces) {
-
         List<Entity> opponents = new ArrayList<>();
         Player player = null;
 

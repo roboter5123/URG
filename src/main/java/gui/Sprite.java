@@ -20,6 +20,10 @@ public class Sprite {
         this.image = image;
     }
 
+    /**
+     * Draws the sprite to a graphics context
+     * @param gc The graphics context to which the sprite should be drawn.
+     */
     public void draw(GraphicsContext gc){
 
         gc.drawImage(image,x,y,width,height);
