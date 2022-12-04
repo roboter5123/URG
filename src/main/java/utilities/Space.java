@@ -1,23 +1,29 @@
 package utilities;
 
 import entities.Entity;
+import entities.Interactable;
 
 public class Space {
 
-    private Entity characteronField;
+    private Entity characterOnField;
+    private Interactable itemOnField;
     private int xPos;
     private int yPos;
 
     public Space() {}
 
     public Entity getEntityOnField() {
-        return characteronField;
+        return characterOnField;
     }
 
     public void setEntityOnField(Entity characteronField) {
 
-        this.characteronField = characteronField;
+        this.characterOnField = characteronField;
+    }
 
+    public Interactable getItemOnField() {
+
+        return itemOnField;
     }
 
     public void setxPos(int xPos) {
@@ -41,7 +47,7 @@ public class Space {
     @Override
     public String toString() {
         return "Utilities.Space{" +
-                "characteronField=" + characteronField +
+                "characteronField=" + characterOnField +
                 '}';
     }
 }

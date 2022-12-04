@@ -22,40 +22,102 @@ public class Entity {
 
     private Image image;
 
-    public Entity() {}
+    public Entity() {
+
+    }
 
     public void move(int moves, char direction, Map map) {
 
         Space[][] spaces = map.getSpaces();
+        int newYPos = this.yPos;
+        int newXPos = this.xPos;
         Space curSpace = spaces[yPos][xPos];
+        Space newSpace = curSpace;
+        Entity entity;
+        Interactable item;
 
         if (direction == 'x' && xPos + moves != spaces.length && xPos + moves >= 0) {
 
-            Entity entity = spaces[yPos ][xPos+ moves].getEntityOnField();
+            newXPos = xPos + moves;
+            newSpace = spaces[newYPos][newXPos];
 
-            if (entity == null) {
-
-                curSpace.setEntityOnField(null);
-                xPos += moves;
-            } else if (entity != this && entity instanceof  Interactable) {
-
-                ((Interactable) entity).interact(this);
-            }
         } else if (direction == 'y' && yPos + moves != spaces.length && yPos + moves >= 0) {
 
-            Entity entity = spaces[yPos + moves][xPos].getEntityOnField();
+            newYPos = yPos + moves;
+            newSpace = spaces[newYPos][newXPos];
 
-            if (entity== null) {
+        }
 
-                curSpace.setEntityOnField(null);
-                yPos += moves;
+        entity = newSpace.getEntityOnField();
+        item = newSpace.getItemOnField();
 
-            } else if (entity != this && entity instanceof  Interactable) {
+        if (entity != null) {
+
+            if (entity instanceof Interactable) {
 
                 ((Interactable) entity).interact(this);
+                return;
+
+            }else {
+
+                return;
             }
         }
-        spaces[yPos][xPos].setEntityOnField(this);
+
+        if (item != null) {
+
+            item.interact(this);
+        }
+
+        this.xPos = newXPos;
+        this.yPos = newYPos;
+        curSpace.setEntityOnField(null);
+        newSpace.setEntityOnField(this);
+
+//        Space[][] spaces = map.getSpaces();
+//        Space curSpace = spaces[yPos][xPos];
+//
+//        if (direction == 'x' && xPos + moves != spaces.length && xPos + moves >= 0) {
+//
+//            Entity entity = spaces[yPos][xPos+ moves].getEntityOnField();
+//            Interactable item = spaces[yPos ][xPos+ moves].getItemOnField();
+//
+//            if (entity == null) {
+//
+//                curSpace.setEntityOnField(null);
+//                xPos += moves;
+//            } else if (entity != this && entity instanceof Interactable) {
+//
+//                ((Interactable) entity).interact(this);
+//
+//            } else if (item != null) {
+//
+//                xPos += moves;
+//                spaces[yPos][xPos].setEntityOnField(this);
+//                item.interact(this);
+//            }
+//        } else if (direction == 'y' && yPos + moves != spaces.length && yPos + moves >= 0) {
+//
+//            Entity entity = spaces[yPos + moves][xPos].getEntityOnField();
+//            Interactable item = spaces[yPos+ moves][xPos].getItemOnField();
+//
+//            if (entity== null) {
+//
+//                curSpace.setEntityOnField(null);
+//                yPos += moves;
+//
+//            } else if (entity != this && entity instanceof Interactable) {
+//
+//                ((Interactable) entity).interact(this);
+//
+//            } else if (item != null) {
+//
+//                yPos += moves;
+//                spaces[yPos][xPos].setEntityOnField(this);
+//                item.interact(this);
+//            }
+//        }
+//        spaces[yPos][xPos].setEntityOnField(this);
     }
 
     public void looseHealth(int dmg) {
