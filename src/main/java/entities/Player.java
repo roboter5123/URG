@@ -32,7 +32,7 @@ public class Player extends Entity implements Interactable {
     }
 
     @Override
-    public void interact(Entity entity) {
+    public void interact(Entity entity, Map map) {
 
         if (entity instanceof Opponent){
 

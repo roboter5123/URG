@@ -51,7 +51,7 @@ public class Opponent extends Entity implements Interactable {
     }
 
     @Override
-    public void interact(Entity entity) {
+    public void interact(Entity entity, Map map) {
 
         this.looseHealth(entity.getDmg());
     }

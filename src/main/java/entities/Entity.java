@@ -55,7 +55,7 @@ public class Entity {
 
             if (entity instanceof Interactable) {
 
-                ((Interactable) entity).interact(this);
+                ((Interactable) entity).interact(this, map);
                 return;
 
             }else {
@@ -66,7 +66,7 @@ public class Entity {
 
         if (item != null) {
 
-            item.interact(this);
+            item.interact(this, map);
         }
 
         this.xPos = newXPos;
@@ -197,5 +197,24 @@ public class Entity {
     public void setImage(Image image) {
 
         this.image = image;
+    }
+
+    public boolean heal(int heal) {
+
+        if (this.health == this.maxHealth){
+
+            return false;
+        }
+
+        if (this.health + heal > this.maxHealth){
+
+            this.health = this.maxHealth;
+
+        }else {
+
+            this.health += heal;
+        }
+
+        return true;
     }
 }

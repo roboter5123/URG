@@ -26,6 +26,11 @@ public class Space {
         return itemOnField;
     }
 
+    public void setItemOnField(Interactable itemOnField) {
+
+        this.itemOnField = itemOnField;
+    }
+
     public void setxPos(int xPos) {
         this.xPos = xPos;
     }

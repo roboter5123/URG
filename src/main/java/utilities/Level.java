@@ -3,6 +3,7 @@ package utilities;
 import entities.OponentType;
 import entities.Opponent;
 import entities.Player;
+import items.HealItem;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class Level {
                 Space[][] spaces = map.getSpaces();
 
                 spaces[ypos][xpos].setEntityOnField(null);
+                spaces[ypos][xpos].setItemOnField(new HealItem(ypos,xpos));
                 opponentList.remove(opponent);
             }
         }

@@ -1,6 +1,7 @@
 package gui;
 
 import entities.Entity;
+import entities.Interactable;
 import entities.Wall;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -58,7 +59,7 @@ public class GameController implements Initializable {
             mapSize = 3;
         }
 
-        playerMaxHealth = mapSize * 2 + 1;
+        playerMaxHealth = mapSize * 2;
         opponentCount = mapSize * 2;
         level = new Level(mapSize, playerMaxHealth, opponentCount);
         drawScreen();
@@ -95,20 +96,31 @@ public class GameController implements Initializable {
             for (int x = 0; x < view[y].length; x++) {
 
                 Entity entity = view[y][x].getEntityOnField();
-                if ((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0) {
-                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor0 ).draw(bgGC);
-                }else{
+                Interactable item = view[y][x].getItemOnField();
 
-                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor1 ).draw(bgGC);
+                if ((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0) {
+
+                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor0).draw(bgGC);
+
+                } else {
+
+                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor1).draw(bgGC);
                 }
-                if (null != entity) {
+
+                if (item != null){
+
+                    new Sprite(x * cellWidth, y * cellHeight , cellHeight * 0.5 , cellWidth * 0.5, item.getImage()).draw(gameGC);
+                }
+
+                if (entity!= null) {
 
                     if (entity instanceof Wall) {
 
                         new Sprite(x * cellWidth, y * cellHeight - (cellHeight * 0.75), cellHeight * 1.75, cellWidth, entity.getImage()).draw(gameGC);
+
                     } else {
 
-                        new Sprite(x * cellWidth- (cellHeight * 0.05), y * cellHeight - (cellHeight * 0.375), cellHeight * 1.1 , cellWidth * 1.1, entity.getImage()).draw(gameGC);
+                        new Sprite(x * cellWidth - (cellHeight * 0.05), y * cellHeight - (cellHeight * 0.375), cellHeight * 1.1, cellWidth * 1.1, entity.getImage()).draw(gameGC);
                     }
                 }
             }
@@ -126,7 +138,7 @@ public class GameController implements Initializable {
         int playerHealth = level.getPlayer().getHealth();
         double lastHeartX = 0;
         int counter = 0;
-        Sprite fullHeart = new Sprite(0,0,cellHeight,cellWidth,new Image("uielements/FullHeart.png"));
+        Sprite fullHeart = new Sprite(0, 0, cellHeight, cellWidth, new Image("uielements/FullHeart.png"));
 
         for (int i = 0; i < playerHealth; i += 2) {
 
@@ -168,13 +180,12 @@ public class GameController implements Initializable {
         System.out.println("level calculation took " + (endTime - startTime) + " ms");
         drawScreen();
 
-         if (statuscode == StatusCode.PLAYER_WON){
+        if (statuscode == StatusCode.PLAYER_WON) {
 
-             System.exit(0);
+            System.exit(0);
+        } else if (statuscode == StatusCode.PLAYER_LOST) {
 
-        }else if (statuscode == StatusCode.PLAYER_LOST){
-
-             System.exit(0);
-         }
+            System.exit(0);
+        }
     }
 }
