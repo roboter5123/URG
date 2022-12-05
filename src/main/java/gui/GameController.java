@@ -24,8 +24,6 @@ public class GameController implements Initializable {
     public Canvas UILayer;
     Level level;
     int mapSize;
-    int playerMaxHealth;
-    int opponentCount;
 
     /**
      * Only called during creation of this controller. Should not be used outside of creation.
@@ -68,9 +66,7 @@ public class GameController implements Initializable {
             mapSize = 3;
         }
 
-        playerMaxHealth = mapSize * 2;
-        opponentCount = mapSize * 2;
-        level = new Level(mapSize, playerMaxHealth, opponentCount);
+        level = new Level(mapSize);
         drawScreen();
     }
 
@@ -210,7 +206,8 @@ public class GameController implements Initializable {
 
         if (statuscode == StatusCode.PLAYER_WON) {
 
-            System.exit(0);
+            level = level.nextLevel();
+            drawScreen();
         } else if (statuscode == StatusCode.PLAYER_LOST) {
 
             System.exit(0);

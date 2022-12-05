@@ -22,16 +22,54 @@ public class Level {
     private boolean gameOver = false;
     private boolean isPlayerAlive = true;
 
-    public Level(int mapSize, int playerMaxHealth, int opponentCount) {
+    /**
+     * Used to make the first level of a run.
+     *
+     * @param mapSize mapSize o the first level in a run.
+     */
+    public Level(int mapSize) {
 
+        int playerMaxHealth = mapSize * mapSize / 3 * 2;
+        int opponentCount = mapSize * mapSize / 3 * 2;
         init(mapSize, playerMaxHealth, opponentCount);
     }
 
     /**
-     * Initializes the game by setting all fields to their needed values.
-     * @param mapSize Sets the length of the space array so that the final size equals (mapSize * ROOM_SIZE)²
+     *Used to every level after the first one.
+     *
+     * @param player The player from the previous level.
+     * @param random The random from the previous level.
+     * @param mapSize The mapSize from the previous level + map growth.
+     */
+    public Level(Player player, Random random, int mapSize) {
+
+        this.player = player;
+        this.random = random;
+        int opponentCount = mapSize * mapSize / 3 * 2;
+        init(mapSize,opponentCount);
+    }
+
+    /**
+     * Initializes the game by setting all fields to their needed values. Used for subsequent levels.
+     *
+     * @param mapSize         Sets the length of the space array so that the final size = (mapSize * ROOM_SIZE)²
+     * @param opponentCount   The amount of opponents on the map.
+     */
+    public void init(int mapSize, int opponentCount) {
+
+        map = new Map(mapSize, ROOM_SIZE, random);
+        map.placeEntity(player);
+        camera = new Camera(this.player, map.getSpaces());
+        minimap = new Minimap(map);
+        generateOpponents(opponentCount);
+    }
+
+    /**
+     * Initializes the game by setting all fields to their needed values. used for the first level only.
+     *
+     * @param mapSize         Sets the length of the space array so that the final size = (mapSize * ROOM_SIZE)²
      * @param playerMaxHealth Sets the maxHealth of the player entity.
-     * @param opponentCount The amount of opponents on the map.
+     * @param opponentCount   The amount of opponents on the map.
      */
     public void init(int mapSize, int playerMaxHealth, int opponentCount) {
 
@@ -44,6 +82,11 @@ public class Level {
         generateOpponents(opponentCount);
     }
 
+    /**
+     * generates opponentCount opponnents and puts them into opponentsList
+     *
+     * @param opponentCount used to determine the amount of opponents to generate.
+     */
     private void generateOpponents(int opponentCount) {
 
         opponentList = new ArrayList<>();
@@ -59,8 +102,10 @@ public class Level {
         }
     }
 
+
     /**
      * Main method of the level object. Moves the player in the desired direction and then the opponents if it's their turn.
+     *
      * @param code The keycode of the pressed key. used to decide the players action.
      * @return A statuscode about if the game is over and if the player is dead or alive.
      */
@@ -78,7 +123,7 @@ public class Level {
 
         isGameOver();
 
-        if (gameOver && isPlayerAlive){
+        if (gameOver && isPlayerAlive) {
 
             return StatusCode.PLAYER_WON;
 
@@ -86,7 +131,7 @@ public class Level {
 
             return StatusCode.PLAYER_LOST;
 
-        }else{
+        } else {
 
             return StatusCode.GAME_ON;
         }
@@ -105,7 +150,7 @@ public class Level {
             gameOver = true;
             isPlayerAlive = false;
 
-        }else if(checkOpponentHealth()){
+        } else if (checkOpponentHealth()) {
 
             gameOver = true;
             isPlayerAlive = true;
@@ -128,6 +173,7 @@ public class Level {
 
     /**
      * looks through the opponent list and if any opponents are dead removes them from the list.
+     *
      * @return If there are any opponents still alive.
      */
     public boolean checkOpponentHealth() {
@@ -150,6 +196,24 @@ public class Level {
         }
 
         return opponentList.isEmpty();
+    }
+
+    /**
+     * Adds a round to the round counter.
+     */
+    public void addPlayerRound() {
+
+        this.roundCounter += 1;
+    }
+
+    /**
+     * generates the next level of the run.
+     *
+     * @return The level to be played next.
+     */
+    public Level nextLevel(){
+
+        return new Level(player,random,(map.getSpaces().length / ROOM_SIZE) + 1);
     }
 
     public Player getPlayer() {
@@ -177,12 +241,5 @@ public class Level {
         return roundCounter;
     }
 
-    /**
-     * Adds a round to the round counter.
-     */
-    public void addPlayerRound() {
-
-        this.roundCounter += 1;
-    }
 
 }
