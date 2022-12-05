@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import utilities.Camera;
 import utilities.Level;
 import utilities.Space;
 import utilities.StatusCode;
@@ -24,11 +25,13 @@ public class GameController implements Initializable {
     public Canvas UILayer;
     Level level;
     int mapSize;
+    Sprite fullHeart = new Sprite(new Image("uielements/heart2.png"));
+    Sprite halfHeart = new Sprite(new Image("uielements/heart1.png"));
 
     /**
      * Only called during creation of this controller. Should not be used outside of creation.
-     * @param url Not used
-     * @param resourceBundle Not used
+     * @param url Not used.
+     * @param resourceBundle Not used.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,7 +76,7 @@ public class GameController implements Initializable {
     /**
      * Scales the 3 canvases (backgroundLayer, gameLayer and UILayer) to the whole window.
      */
-    public void scaleCanvases() {
+    public void scaleCanvases(Space[][] view) {
 
         double windowHeight = root.getHeight();
         double windowWidth = root.getWidth();
@@ -83,6 +86,30 @@ public class GameController implements Initializable {
         gameLayer.setHeight(windowHeight);
         UILayer.setHeight(windowHeight);
         UILayer.setWidth(windowWidth);
+        double layerWidth = gameLayer.getWidth();
+        double layerHeight = gameLayer.getHeight();
+        double cellWidth = layerWidth / view.length;
+        double cellHeight = layerHeight / view[0].length;
+
+        for (Space[] spaces : view) {
+
+            for (Space curSpace : spaces) {
+
+                Item item = curSpace.getItemOnField();
+                Entity entity = curSpace.getEntityOnField();
+                curSpace.setDimensions(cellHeight, cellWidth);
+
+                if (item != null) {
+
+                    item.setDimensions(cellHeight, cellWidth);
+                }
+
+                if (entity != null) {
+
+                    entity.setDimensions(cellHeight, cellWidth);
+                }
+            }
+        }
     }
 
     /**
@@ -97,42 +124,32 @@ public class GameController implements Initializable {
         gameGC.clearRect(0, 0, layerWidth, layerHeight);
         GraphicsContext bgGC = backgroundLayer.getGraphicsContext2D();
         bgGC.clearRect(0, 0, layerWidth, layerHeight);
-
         double cellWidth = layerWidth / view.length;
         double cellHeight = layerHeight / view[0].length;
 
-        Image floor0 = new Image("entities/Floor0.png");
-        Image floor1 = new Image("entities/Floor1.png");
         for (int y = 0; y < view.length; y++) {
 
             for (int x = 0; x < view[y].length; x++) {
 
-                Entity entity = view[y][x].getEntityOnField();
-                Item item = view[y][x].getItemOnField();
+                Space curSpace = view[y][x];
+                Entity entity = curSpace.getEntityOnField();
+                Item item = curSpace.getItemOnField();
 
-                if ((view[y][x].getxPos() + view[y][x].getyPos()) % 2 == 0) {
+                curSpace.draw(y * cellHeight,x * cellWidth,bgGC);
 
-                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor0).draw(bgGC);
-
-                } else {
-
-                    new Sprite(x * cellWidth, y * cellHeight, cellHeight, cellWidth, floor1).draw(bgGC);
-                }
 
                 if (item != null){
 
-                    new Sprite(x * cellWidth + (cellWidth * 0.25), y * cellHeight , cellHeight * 0.5 , cellWidth * 0.5, item.getImage()).draw(gameGC);
+                    item.draw(y * cellHeight+ (cellHeight * 0.25) , x * cellWidth + (cellWidth * 0.40), gameGC);
                 }
 
                 if (entity!= null) {
 
                     if (entity instanceof Wall) {
-
-                        new Sprite(x * cellWidth, y * cellHeight - (cellHeight * 0.75), cellHeight * 1.75, cellWidth, entity.getImage()).draw(gameGC);
+                        entity.draw(y * cellHeight - (cellHeight * 0.75), x * cellWidth,gameGC);
 
                     } else {
-
-                        new Sprite(x * cellWidth - (cellHeight * 0.05), y * cellHeight - (cellHeight * 0.375), cellHeight * 1.1, cellWidth * 1.1, entity.getImage()).draw(gameGC);
+                        entity.draw(y * cellHeight - (cellHeight * 0.375), x * cellWidth - (cellHeight * 0.05),gameGC);
                     }
                 }
             }
@@ -145,6 +162,8 @@ public class GameController implements Initializable {
      */
     private void drawUI(Space[][] view) {
 
+        long startTime = System.currentTimeMillis();
+
         double layerWidth = UILayer.getWidth();
         double layerHeight = UILayer.getHeight();
         double cellWidth = layerWidth / view.length / 2;
@@ -154,20 +173,32 @@ public class GameController implements Initializable {
         int playerHealth = level.getPlayer().getHealth();
         double lastHeartX = 0;
         int counter = 0;
-        Sprite fullHeart = new Sprite(0, 0, cellHeight, cellWidth, new Image("uielements/heart2.png"));
+        fullHeart.setDimensions(cellHeight,cellWidth);
+
+        long endtime = System.currentTimeMillis();
+        System.out.println("Preparing to draw the ui took " + (endtime - startTime) + "ms");
+        startTime = endtime;
 
         for (int i = 0; i < playerHealth; i += 2) {
 
-            fullHeart.setX(cellWidth * counter);
-            fullHeart.draw(UIGC);
+            fullHeart.draw(0,cellWidth * counter, UIGC);
             lastHeartX = counter * cellWidth;
             counter++;
         }
 
+        endtime = System.currentTimeMillis();
+        System.out.println("drawing the full hearts took " + (endtime - startTime) + "ms");
+        startTime = endtime;
+
         if (playerHealth % 2 != 0) {
 
-            new Sprite(lastHeartX, 0, cellHeight, cellWidth, new Image("uielements/heart1.png")).draw(UIGC);
+            halfHeart.setDimensions(cellHeight,cellWidth);
+            halfHeart.draw(0, lastHeartX, UIGC);
+
         }
+
+        endtime = System.currentTimeMillis();
+        System.out.println("drawing the half heart took " + (endtime - startTime) + "ms");
     }
 
     /**
@@ -175,19 +206,43 @@ public class GameController implements Initializable {
      */
     public void drawScreen() {
 
-        Space[][] view = level.getCamera().getViewPort(level.getMap().getSpaces());
-        long startTime = System.currentTimeMillis();
-        scaleCanvases();
-        long endTime = System.currentTimeMillis();
-        System.out.println("Canvas scaling took " + (endTime - startTime) + " ms");
-        startTime = endTime;
+        long starttime = System.currentTimeMillis();
+
+        Space[][] spaces = level.getMap().getSpaces();
+
+        long endtime = System.currentTimeMillis();
+        System.out.println("Getting Spaces from the map took " +(endtime - starttime) + "ms");
+        starttime = endtime;
+
+        Camera camera = level.getCamera();
+
+        endtime = System.currentTimeMillis();
+        System.out.println("Getting camera from the level took " +(endtime - starttime) + "ms");
+        starttime = endtime;
+
+        Space[][] view = camera.getViewPort(spaces);
+
+        endtime = System.currentTimeMillis();
+        System.out.println("Getting views from the camera took " +(endtime - starttime) + "ms");
+        starttime = endtime;
+
+        scaleCanvases(view);
+
+        endtime = System.currentTimeMillis();
+        System.out.println("Scaling the canvases took " + (endtime - starttime) + "ms");
+        starttime = endtime;
+
         drawGameAndBG(view);
-        endTime = System.currentTimeMillis();
-        System.out.println("Background and game drawing took " + (endTime - startTime) + " ms");
-        startTime = endTime;
+
+        endtime = System.currentTimeMillis();
+        System.out.println("Drawing the baclground and game layer took " + (endtime - starttime) + "ms");
+        starttime = endtime;
+
         drawUI(view);
-        endTime = System.currentTimeMillis();
-        System.out.println("UI drawing took " + (endTime - startTime) + " ms");
+
+        endtime = System.currentTimeMillis();
+        System.out.println("Drawing the UI took " + (endtime - starttime) + "ms");
+
     }
 
     /**
@@ -199,10 +254,17 @@ public class GameController implements Initializable {
 
         System.out.println("=".repeat(50));
         long startTime = System.currentTimeMillis();
+
         StatusCode statuscode = level.play(code);
+
         long endTime = System.currentTimeMillis();
         System.out.println("level calculation took " + (endTime - startTime) + " ms");
+        endTime = startTime;
+
         drawScreen();
+
+        endTime = System.currentTimeMillis();
+        System.out.println("Whole screen draw took " + (endTime - startTime) + " ms");
 
         if (statuscode == StatusCode.PLAYER_WON) {
 

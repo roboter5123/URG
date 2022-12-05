@@ -1,6 +1,5 @@
 package entities;
 
-import javafx.scene.image.Image;
 import utilities.Map;
 
 public interface Interactable {
@@ -10,6 +9,5 @@ public interface Interactable {
      * @param map The map on which the interaction happens.
      */
     void interact(Entity entity, Map map);
-    Image getImage();
 
 }

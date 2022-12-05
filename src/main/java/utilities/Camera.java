@@ -8,12 +8,15 @@ public class Camera {
     private final Space[][] viewPort;
     private final Entity target;
     private final int viewPortSize;
+    private final Space nonExistentSpace;
 
     public Camera(Entity target, Space[][] spaces) {
 
         this.target = target;
         this.viewPortSize = 7;
         this.viewPort = new Space[viewPortSize][viewPortSize];
+        this.nonExistentSpace = new Space();
+        this.nonExistentSpace.setEntityOnField(new Wall());
         updateViewPort(spaces);
     }
 
@@ -39,14 +42,15 @@ public class Camera {
         int viewPortYMin = targetYPos - viewPortSize / 2;
         int viewPortXMin = targetXPos - viewPortSize / 2;
 
+
         for (int y = viewPortYMin; y < viewPortYMax; y++) {
 
             for (int x = viewPortXMin; x < viewPortXMax; x++) {
 
                 if (y < 0 || x < 0 || y >= spaces.length || x >= spaces[y].length) {
 
-                    viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)] = new Space();
-                    viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)].setEntityOnField(new Wall());
+                    viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)] = this.nonExistentSpace;
+
                 } else {
 
                     viewPort[y + (viewPortYMin * -1)][x + (viewPortXMin * -1)] = spaces[y][x];

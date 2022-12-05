@@ -63,6 +63,7 @@ public class LevelSelectMenu {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
             }
         });
         stage.setScene(scene);

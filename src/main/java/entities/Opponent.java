@@ -2,6 +2,7 @@ package entities;
 
 import ai.AI;
 import ai.Orc;
+import gui.Sprite;
 import items.Item;
 import javafx.scene.image.Image;
 import utilities.Map;
@@ -20,7 +21,7 @@ public class Opponent extends Entity implements Interactable {
         if (type == OpponentType.ORC) {
 
             this.ai = new Orc(player, this);
-            this.setImage(new Image("entities/Orc.png"));
+            this.setSprite(new Sprite(new Image("entities/Orc.png")));
             this.lootTable = this.ai.getLootTable();
 
         }

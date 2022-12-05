@@ -1,22 +1,16 @@
 package gui;
 
+import entities.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Sprite {
-
-    double x;
-    double y;
+public class Sprite implements Drawable {
     double height;
     double width;
     Image image;
 
-    public Sprite(double x, double y, double height, double width, Image image) {
+    public Sprite(Image image) {
 
-        this.x = x;
-        this.y = y;
-        this.height = height;
-        this.width = width;
         this.image = image;
     }
 
@@ -24,18 +18,21 @@ public class Sprite {
      * Draws the sprite to a graphics context
      * @param gc The graphics context to which the sprite should be drawn.
      */
-    public void draw(GraphicsContext gc){
+    public void draw(double yPos, double xPos, GraphicsContext gc){
 
-        gc.drawImage(image,x,y,width,height);
+        gc.drawImage(image,xPos,yPos,width,height);
     }
 
-    public double getX() {
+    /**
+     * Sets the pixel dimensions the sprite will take once it's drawn on the canvas.
+     *
+     * @param height The height in pixels that the sprite will take up one the canvas once drawn on the canvas.
+     * @param width  The width in pixels that the sprite will take up one the canvas once drawn on the canvas.
+     */
+    public void setDimensions(double height, double width){
 
-        return x;
+        this.height = height;
+        this.width = width;
     }
 
-    public void setX(double x) {
-
-        this.x = x;
-    }
 }

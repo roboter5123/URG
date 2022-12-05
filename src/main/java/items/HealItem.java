@@ -2,6 +2,8 @@ package items;
 
 import entities.Entity;
 import entities.Player;
+import gui.Sprite;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import utilities.Map;
 
@@ -12,7 +14,7 @@ public class HealItem extends Item {
     public HealItem(int heal) {
 
         this.heal = heal;
-        this.image = new Image("uielements/heart"+heal+".png");
+        this.sprite = new Sprite(new Image("uielements/heart"+heal+".png"));
     }
 
     /**
@@ -41,9 +43,15 @@ public class HealItem extends Item {
         map.getSpaces()[yPos][xPos].setItemOnField(null);
     }
 
+    /**
+     * Draws the drawable to the given graphics context
+     *
+     * @param yPos The y position for the top left pixel of the sprite.
+     * @param xPos The x position for the top left pixel of the sprite.
+     * @param gc   The graphics context of the canvas this sprite should be drawn on.
+     */
     @Override
-    public Image getImage() {
-
-        return this.image;
+    public void draw(double yPos, double xPos, GraphicsContext gc) {
+        this.sprite.draw(yPos,xPos,gc);
     }
 }

@@ -1,10 +1,11 @@
 package entities;
 
-import javafx.scene.image.Image;
+import gui.Sprite;
+import javafx.scene.canvas.GraphicsContext;
 import utilities.Map;
 import utilities.Space;
 
-public class Entity {
+public class Entity implements Drawable, Interactable {
 
     private int xPos;
     private int yPos;
@@ -12,8 +13,7 @@ public class Entity {
     private int health;
     private int dmg;
     int reach;
-    private String sprite;
-    private Image image;
+    private Sprite sprite;
 
     public Entity() {
 
@@ -100,6 +100,29 @@ public class Entity {
         return true;
     }
 
+    /**
+     * Draws the drawable to the given graphics context.
+     *
+     * @param yPos The y position for the top left pixel of the sprite.
+     * @param xPos The x position for the top left pixel of the sprite.
+     * @param gc   The graphics context of the canvas this sprite should be drawn on.
+     */
+    @Override
+    public void draw(double yPos, double xPos, GraphicsContext gc) {
+        this.sprite.draw(yPos,xPos,gc);
+    }
+
+    /**
+     * Sets the pixel dimensions the sprite will take once it's drawn on the canvas.
+     *
+     * @param height The height in pixels that the sprite will take up one the canvas once drawn on the canvas.
+     * @param width  The width in pixels that the sprite will take up one the canvas once drawn on the canvas.
+     */
+    @Override
+    public void setDimensions(double height, double width) {
+        this.sprite.setDimensions(height * 1.1,width * 1.1);
+    }
+
     public int getDmg() {
 
         return dmg;
@@ -145,29 +168,19 @@ public class Entity {
         this.maxHealth = maxHealth;
     }
 
-    public String getSprite() {
-
-        return sprite;
-    }
-
-    public void setSprite(String sprite) {
-
-        this.sprite = sprite;
-    }
-
     public void setDmg(int dmg) {
 
         this.dmg = dmg;
     }
 
-    public Image getImage() {
+    public Sprite getSprite() {
 
-        return image;
+        return sprite;
     }
 
-    public void setImage(Image image) {
+    public void setSprite(Sprite sprite) {
 
-        this.image = image;
+        this.sprite = sprite;
     }
 
     @Override
@@ -177,5 +190,10 @@ public class Entity {
                 "xPos=" + xPos +
                 ", yPos=" + yPos +
                 '}';
+    }
+
+    @Override
+    public void interact(Entity entity, Map map) {
+
     }
 }

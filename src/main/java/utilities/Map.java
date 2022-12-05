@@ -29,9 +29,7 @@ public class Map {
 
             for (int x = 0; x < spaces[y].length; x++) {
 
-                spaces[y][x] = new Space();
-                spaces[y][x].setyPos(y);
-                spaces[y][x].setxPos(x);
+                spaces[y][x] = new Space(y,x);
             }
         }
         setWalls(random);

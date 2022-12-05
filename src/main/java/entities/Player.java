@@ -1,9 +1,10 @@
 package entities;
 
+import gui.Sprite;
 import javafx.scene.image.Image;
 import utilities.Map;
 
-public class Player extends Entity implements Interactable {
+public class Player extends Entity implements Interactable, Drawable {
 
     private final int reach = 2;
 
@@ -12,8 +13,7 @@ public class Player extends Entity implements Interactable {
         this.setMaxHealth(maxHealth);
         this.setHealth(maxHealth);
         this.setDmg(1);
-        this.setSprite(" P ");
-        this.setImage(new Image("entities/Player.png"));
+        this.setSprite(new Sprite(new Image("entities/Player.png")));
     }
 
     /**
