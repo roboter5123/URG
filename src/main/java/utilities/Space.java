@@ -10,8 +10,11 @@ import javafx.scene.image.Image;
 public class Space implements Drawable {
 
     private Entity entityOnField;
+
     private Item itemOnField;
+
     private int xPos;
+
     private int yPos;
     private final Sprite sprite;
 
